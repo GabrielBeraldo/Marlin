@@ -1177,7 +1177,10 @@ void prepare_move_to_destination() {
       SERIAL_ECHOLNPGM(" " MSG_FIRST);
 
       #if ENABLED(ULTRA_LCD) || ENABLED(EXTENSIBLE_UI)
-        ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s
+       
+       ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s%s%s" MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : "", ii ? MSG_I : "", jj ? MSG_J : "");
+       
+       /* ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s
 #if NON_E_AXES > 3
 %s
 #if NON_E_AXES > 4
@@ -1197,7 +1200,9 @@ void prepare_move_to_destination() {
               #endif
             #endif
           #endif
-        );
+        );*/
+
+
       #endif
       return true;
     }
@@ -1393,7 +1398,7 @@ void do_homing_move(const AxisEnum axis, const float distance, const float fr_mm
         , planner.get_axis_position_mm(I_AXIS)
         #if NON_E_AXES > 4
           , planner.get_axis_position_mm(J_AXIS)
-          #if NON_E_AXES > 3
+          #if NON_E_AXES > 5
     	    , planner.get_axis_position_mm(K_AXIS)
           #endif
         #endif

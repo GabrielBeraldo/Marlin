@@ -32,6 +32,7 @@
 #include "temperature.h"
 #include "../lcd/ultralcd.h"
 
+
 #if ENABLED(ENDSTOP_INTERRUPTS_FEATURE)
   #include HAL_PATH(../HAL, endstop_interrupts.h)
 #endif
@@ -446,6 +447,9 @@ void Endstops::event_handler() {
     SERIAL_EOL();
 
     #if ENABLED(ULTRA_LCD)
+
+    ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c %c %c"), chrX, chrY, chrZ, chrI, chrJ, chrP);
+    /* 
       ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c
 #if NON_E_AXES > 3
  %c
@@ -468,6 +472,10 @@ void Endstops::event_handler() {
       #endif 
       , chrP);
     #endif
+*/
+
+  #endif
+
 
     #if ENABLED(ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED) && ENABLED(SDSUPPORT)
       if (planner.abort_on_endstop_hit) {
