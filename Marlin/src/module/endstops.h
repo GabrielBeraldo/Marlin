@@ -33,9 +33,9 @@ enum EndstopEnum : char {
   Y_MIN,
   Z_MIN,
   Z_MIN_PROBE,
-  X_MAX,
-  Y_MAX,
-  Z_MAX,
+  K_MIN,
+  J_MIN,
+  I_MIN,
   X2_MIN,
   X2_MAX,
   Y2_MIN,
@@ -44,11 +44,11 @@ enum EndstopEnum : char {
   Z2_MAX,
   Z3_MIN,
   Z3_MAX,
-  I_MIN,
+  Z_MAX,
   I_MAX,
-  J_MIN,
+  Y_MAX,
   J_MAX,
-  K_MIN,
+  X_MAX,
   K_MAX
 };
 

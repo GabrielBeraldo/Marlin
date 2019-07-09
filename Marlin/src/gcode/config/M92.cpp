@@ -33,6 +33,8 @@ void report_M92(
   SERIAL_ECHOPAIR_P(port, " M92 X", LINEAR_UNIT(planner.settings.axis_steps_per_mm[X_AXIS]));
   SERIAL_ECHOPAIR_P(port, " Y", LINEAR_UNIT(planner.settings.axis_steps_per_mm[Y_AXIS]));
   SERIAL_ECHOPAIR_P(port, " Z", LINEAR_UNIT(planner.settings.axis_steps_per_mm[Z_AXIS]));
+  SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.axis_steps_per_mm[I_AXIS]));
+  SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.axis_steps_per_mm[J_AXIS]));
   #if DISABLED(DISTINCT_E_FACTORS)
     SERIAL_ECHOPAIR_P(port, " E", VOLUMETRIC_UNIT(planner.settings.axis_steps_per_mm[E_AXIS]));
   #endif
@@ -67,7 +69,7 @@ void GcodeSuite::M92() {
   if (target_extruder < 0) return;
 
   // No arguments? Show M92 report.
-  if (!parser.seen("XYZE"
+  if (!parser.seen("XYZIJE"
     #if ENABLED(MAGIC_NUMBERS_GCODE)
       "HL"
     #endif
@@ -78,7 +80,7 @@ void GcodeSuite::M92() {
     true, target_extruder
   );
 
-  LOOP_NUM_AXIS(i) {
+  LOOP_NUM_AXIS_N(i) {
     if (parser.seenval(axis_codes[i])) {
       if (i == E_AXIS) {
         const float value = parser.value_per_axis_units((AxisEnum)(E_AXIS_N(target_extruder)));
