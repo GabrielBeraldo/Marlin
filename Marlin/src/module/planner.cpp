@@ -1917,15 +1917,7 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
       #endif
     #endif
   ) {
-    #if NON_E_AXES > 3
-	  block->millimeters = ABS(delta_mm[I_AXIS]);
-      #if NON_E_AXES > 4
-        block->millimeters = ABS(delta_mm[J_AXIS]);
-        #if NON_E_AXES > 5
-          block->millimeters = ABS(delta_mm[K_AXIS]);
-        #endif
-      #endif
-    #endif
+    
     block->millimeters = ABS(delta_mm[E_AXIS]);
   }
   else {
@@ -1935,12 +1927,52 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
       block->millimeters = SQRT(
         #if CORE_IS_XY
           sq(delta_mm[X_HEAD]) + sq(delta_mm[Y_HEAD]) + sq(delta_mm[Z_AXIS])
+          #if NON_E_AXES > 3
+            + sq(delta_mm[I_AXIS])
+            #if NON_E_AXES > 4
+            + sq(delta_mm[J_AXIS])
+              #if NON_E_AXES > 5
+              + sq(delta_mm[K_AXIS])
+              #endif
+            #endif
+          #endif
+          
         #elif CORE_IS_XZ
           sq(delta_mm[X_HEAD]) + sq(delta_mm[Y_AXIS]) + sq(delta_mm[Z_HEAD])
+          #if NON_E_AXES > 3
+            + sq(delta_mm[I_AXIS])
+            #if NON_E_AXES > 4
+            + sq(delta_mm[J_AXIS])
+              #if NON_E_AXES > 5
+              + sq(delta_mm[K_AXIS])
+              #endif
+            #endif
+          #endif
+          
         #elif CORE_IS_YZ
           sq(delta_mm[X_AXIS]) + sq(delta_mm[Y_HEAD]) + sq(delta_mm[Z_HEAD])
+          #if NON_E_AXES > 3
+            + sq(delta_mm[I_AXIS])
+            #if NON_E_AXES > 4
+            + sq(delta_mm[J_AXIS])
+              #if NON_E_AXES > 5
+              + sq(delta_mm[K_AXIS])
+              #endif
+            #endif
+          #endif
+          
         #else
-          sq(delta_mm[X_AXIS]) + sq(delta_mm[Y_AXIS]) + sq(delta_mm[Z_AXIS])
+          sq(delta_mm[X_AXIS]) + sq(delta_mm[Y_AXIS]) + sq(delta_mm[Z_AXIS]) 
+          #if NON_E_AXES > 3
+            + sq(delta_mm[I_AXIS])
+            #if NON_E_AXES > 4
+            + sq(delta_mm[J_AXIS])
+              #if NON_E_AXES > 5
+              + sq(delta_mm[K_AXIS])
+              #endif
+            #endif
+          #endif
+          
         #endif
       );
 
@@ -2267,6 +2299,17 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
       if (i == E_AXIS) i += extruder;
     #endif
     if (cs > settings.max_feedrate_mm_s[i]) NOMORE(speed_factor, settings.max_feedrate_mm_s[i] / cs);
+
+    //i was desperate for answares
+    /*   
+    SERIAL_ECHOPAIR("delta_mm: ",delta_mm_i);
+    SERIAL_ECHOPAIR(" cs: ",cs);
+    SERIAL_ECHOPAIR(" inverse_secs: ",inverse_secs);
+    SERIAL_ECHOPAIR(" inverse_millimeters*10^3: ", inverse_millimeters*1000);
+    SERIAL_ECHOPAIR(" fr_mm_s: ", fr_mm_s);
+    SERIAL_ECHOPAIR(" block->millimeters: ", block->millimeters);
+    SERIAL_ECHOPAIR(" block->steps[i]: ", block->steps[i]);
+    SERIAL_EOL();*/
   }
 
   // Max segment time in µs.

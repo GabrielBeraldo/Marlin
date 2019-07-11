@@ -242,7 +242,7 @@ void get_cartesian_from_steppers() {
     #else
       cartes[X_AXIS] = planner.get_axis_position_mm(X_AXIS);
       cartes[Y_AXIS] = planner.get_axis_position_mm(Y_AXIS);
-      
+    
     #endif
     cartes[Z_AXIS] = planner.get_axis_position_mm(Z_AXIS);
   #endif
