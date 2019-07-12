@@ -1165,9 +1165,12 @@ void Planner::recalculate() {
  * Maintain fans, paste extruder pressure,
  */
 void Planner::check_axes_activity() {
-  uint8_t axis_active[NUM_AXIS] = { 0 },
-          tail_fan_speed[FAN_COUNT];
-
+  uint8_t axis_active[NUM_AXIS] = { 0 };
+  
+  #if FAN_COUNT > 0  
+    uint8_t  tail_fan_speed[FAN_COUNT];
+  #endif
+  
   #if ENABLED(BARICUDA)
     #if HAS_HEATER_1
       uint8_t tail_valve_pressure;
@@ -1906,19 +1909,23 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
   #endif
   delta_mm[E_AXIS] = esteps_float * steps_to_mm[E_AXIS_N(extruder)];
 
-  if (block->steps[A_AXIS] < MIN_STEPS_PER_SEGMENT && block->steps[B_AXIS] < MIN_STEPS_PER_SEGMENT && block->steps[C_AXIS] < MIN_STEPS_PER_SEGMENT
+  if (block->steps[A_AXIS] < MIN_STEPS_PER_SEGMENT && block->steps[B_AXIS] < MIN_STEPS_PER_SEGMENT && block->steps[C_AXIS] < MIN_STEPS_PER_SEGMENT) {
+    
+    block->millimeters = ABS(delta_mm[E_AXIS]);
+          
     #if NON_E_AXES > 3
-      && block->steps[I_AXIS] < MIN_STEPS_PER_SEGMENT
+      if(ABS(delta_mm[I_AXIS]) > block->millimeters ) block->millimeters = ABS(delta_mm[I_AXIS]);
+      
       #if NON_E_AXES > 4
-        && block->steps[J_AXIS] < MIN_STEPS_PER_SEGMENT
+        if(ABS(delta_mm[J_AXIS]) > block->millimeters ) block->millimeters = ABS(delta_mm[J_AXIS]);
+        
         #if NON_E_AXES > 5
-          && block->steps[K_AXIS] < MIN_STEPS_PER_SEGMENT
+         if(ABS(delta_mm[K_AXIS]) > block->millimeters ) block->millimeters = ABS(delta_mm[K_AXIS]);
+        
         #endif
       #endif
     #endif
-  ) {
     
-    block->millimeters = ABS(delta_mm[E_AXIS]);
   }
   else {
     if (millimeters)
@@ -1927,51 +1934,15 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
       block->millimeters = SQRT(
         #if CORE_IS_XY
           sq(delta_mm[X_HEAD]) + sq(delta_mm[Y_HEAD]) + sq(delta_mm[Z_AXIS])
-          #if NON_E_AXES > 3
-            + sq(delta_mm[I_AXIS])
-            #if NON_E_AXES > 4
-            + sq(delta_mm[J_AXIS])
-              #if NON_E_AXES > 5
-              + sq(delta_mm[K_AXIS])
-              #endif
-            #endif
-          #endif
-          
+      
         #elif CORE_IS_XZ
           sq(delta_mm[X_HEAD]) + sq(delta_mm[Y_AXIS]) + sq(delta_mm[Z_HEAD])
-          #if NON_E_AXES > 3
-            + sq(delta_mm[I_AXIS])
-            #if NON_E_AXES > 4
-            + sq(delta_mm[J_AXIS])
-              #if NON_E_AXES > 5
-              + sq(delta_mm[K_AXIS])
-              #endif
-            #endif
-          #endif
           
         #elif CORE_IS_YZ
           sq(delta_mm[X_AXIS]) + sq(delta_mm[Y_HEAD]) + sq(delta_mm[Z_HEAD])
-          #if NON_E_AXES > 3
-            + sq(delta_mm[I_AXIS])
-            #if NON_E_AXES > 4
-            + sq(delta_mm[J_AXIS])
-              #if NON_E_AXES > 5
-              + sq(delta_mm[K_AXIS])
-              #endif
-            #endif
-          #endif
           
         #else
           sq(delta_mm[X_AXIS]) + sq(delta_mm[Y_AXIS]) + sq(delta_mm[Z_AXIS]) 
-          #if NON_E_AXES > 3
-            + sq(delta_mm[I_AXIS])
-            #if NON_E_AXES > 4
-            + sq(delta_mm[J_AXIS])
-              #if NON_E_AXES > 5
-              + sq(delta_mm[K_AXIS])
-              #endif
-            #endif
-          #endif
           
         #endif
       );
@@ -2300,16 +2271,16 @@ bool Planner::_populate_block(block_t * const block, bool split_move,
     #endif
     if (cs > settings.max_feedrate_mm_s[i]) NOMORE(speed_factor, settings.max_feedrate_mm_s[i] / cs);
 
-    //i was desperate for answares
-    /*   
+    
+    /*  
     SERIAL_ECHOPAIR("delta_mm: ",delta_mm_i);
     SERIAL_ECHOPAIR(" cs: ",cs);
     SERIAL_ECHOPAIR(" inverse_secs: ",inverse_secs);
     SERIAL_ECHOPAIR(" inverse_millimeters*10^3: ", inverse_millimeters*1000);
     SERIAL_ECHOPAIR(" fr_mm_s: ", fr_mm_s);
     SERIAL_ECHOPAIR(" block->millimeters: ", block->millimeters);
-    SERIAL_ECHOPAIR(" block->steps[i]: ", block->steps[i]);
-    SERIAL_EOL();*/
+    SERIAL_EOL();
+    */
   }
 
   // Max segment time in µs.
