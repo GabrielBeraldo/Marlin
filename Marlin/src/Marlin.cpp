@@ -1104,6 +1104,10 @@ void setup() {
   #if ENABLED(PRUSA_MMU2)
     mmu2.init();
   #endif
+
+  #if SOFTWARE_SERIAL > 0
+    initialize_software_serial();
+  #endif
 }
 
 /**
@@ -1140,6 +1144,11 @@ void loop() {
     #endif // SDSUPPORT
 
     if (commands_in_queue < BUFSIZE) get_available_commands();
+    
+    #if SOFTWARE_SERIAL > 0
+      UPDATE_SOFTWARE_SERIAL_1();
+    #endif
+
     advance_command_queue();
     endstops.event_handler();
     idle();

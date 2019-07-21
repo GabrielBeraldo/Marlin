@@ -48,3 +48,7 @@
 #include "../core/utility.h"
 #include "../core/serial.h"
 #include "../core/minmax.h"
+
+#if SOFTWARE_SERIAL > 0
+  #include "../core/softwareSerial.h"
+#endif

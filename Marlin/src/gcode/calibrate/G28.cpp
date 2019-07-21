@@ -183,6 +183,11 @@
 void GcodeSuite::G28(const bool always_home_all) {
 
   #if ENABLED(DEBUG_LEVELING_FEATURE)
+  
+    #if SOFTWARE_SERIAL > 0
+      SOFTWARE_SERIAL_1_PRINTLN("G28 baby!");
+    #endif
+
     if (DEBUGGING(LEVELING)) {
       SERIAL_ECHOLNPGM(">>> G28");
       log_machine_info();

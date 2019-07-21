@@ -688,7 +688,8 @@
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
-#define ENDSTOP_INTERRUPTS_FEATURE
+//TO USE ENDSTOP INTERRUPTS YOU MUST NOT USE ANY ADITIONAL SOFTWARE SERIAL
+//#define ENDSTOP_INTERRUPTS_FEATURE
 
 /**
  * Endstop Noise Threshold
