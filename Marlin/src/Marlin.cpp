@@ -1147,6 +1147,7 @@ void loop() {
     
     #if SOFTWARE_SERIAL > 0
       UPDATE_SOFTWARE_SERIAL_1();
+      UPDATE_SOFTWARE_SERIAL_2();
     #endif
 
     advance_command_queue();

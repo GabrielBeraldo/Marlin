@@ -26,36 +26,32 @@
 
 #include <arduino.h>
 #include <SoftwareSerial.h>
+#include <NeoSWSerial.h>
 
 
 #if SOFTWARE_SERIAL > 0
    
     void initialize_software_serial();
-    
-    void SOFTWARE_SERIAL_1_CHAR(char);
-    void SOFTWARE_SERIAL_1_PRINT(String);   
-    void SOFTWARE_SERIAL_1_PRINTLN(String);   
-    void SOFTWARE_SERIAL_1_FLUSH();  
-    void UPDATE_SOFTWARE_SERIAL_1();         
+    void UPDATE_SOFTWARE_SERIAL_1();
+
+    void SW_SERIAL_1_ECHO(String);
+    void SW_SERIAL_1_ECHOLN(String);
 
     #if SOFTWARE_SERIAL > 1
-    
-        void SOFTWARE_SERIAL_2_CHAR(char);
-        void SOFTWARE_SERIAL_2_PRINT(String);   
-        void SOFTWARE_SERIAL_2_PRINTLN(String);   
-        void SOFTWARE_SERIAL_2_FLUSH();  
 
-        #if SOFTWARE_SERIAL > 2
-
-            void SOFTWARE_SERIAL_3_CHAR(char);
-            void SOFTWARE_SERIAL_3_PRINT(String);   
-            void SOFTWARE_SERIAL_3_PRINTLN(String);   
-            void SOFTWARE_SERIAL_3_FLUSH();  
+        void UPDATE_SOFTWARE_SERIAL_2();
         
+        void SW_SERIAL_2_ECHO(String);
+        void SW_SERIAL_2_ECHOLN(String);
+    
+        #if SOFTWARE_SERIAL > 2
+    
+        void UPDATE_SOFTWARE_SERIAL_3();
+        
+        void SW_SERIAL_3_ECHO(String);
+        void SW_SERIAL_3_ECHOLN(String);
+    
         #endif
     #endif
-    
-    
-
 #endif
 #endif

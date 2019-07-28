@@ -28,112 +28,137 @@
   #include <pins_arduino.h>
 #endif
 
-#if SOFTWARE_SERIAL > 0
+#if SOFTWARE_SERIAL>0
+  
+  SoftwareSerial SW_SERIAL_1(S_SERIAL_RX_1, S_SERIAL_TX_1); // RX, TX
 
-    
-    SoftwareSerial SOFTWARE_SERIAL_1(S_SERIAL_RX_1, S_SERIAL_TX_1); // RX, TX
-    #if SOFTWARE_SERIAL > 1
-        SoftwareSerial SOFTWARE_SERIAL_2(S_SERIAL_RX_2, S_SERIAL_TX_2); // RX, TX
-        #if SOFTWARE_SERIAL > 2
-            SoftwareSerial SOFTWARE_SERIAL_3(S_SERIAL_RX_3, S_SERIAL_TX_3); // RX, TX
-        #endif
-    #endif    
+  char    _sw_serial_1_received_data[30];
+  uint8_t _sw_serial_1_length = 0;
+  bool    _sw_serial_1_avaliable = false;
 
-    void initialize_software_serial(){
-        //SERIAL_ECHOLN("serial initialize here!");
-        SOFTWARE_SERIAL_1.begin(S_SERIAL_BAUDRATE_1);
-        #if SOFTWARE_SERIAL > 1
-            SOFTWARE_SERIAL_2.begin(S_SERIAL_BAUDRATE_2);
-            #if SOFTWARE_SERIAL > 2
-                SOFTWARE_SERIAL_3.begin(S_SERIAL_BAUDRATE_3);
-            #endif
-        #endif   
+  static void SW_SERIAL_1_CHAR(char t)           { SW_SERIAL_1.write(t); }
+  static void SW_SERIAL_1_PRINT(String text)     { SW_SERIAL_1.print(text); }
+  static void SW_SERIAL_1_PRINTLN(String text)   { SW_SERIAL_1.println(text); }
+  static void SW_SERIAL_1_FLUSH()                { SW_SERIAL_1.flush(); }
+  static void SW_SERIAL_1_LISTEN()               { SW_SERIAL_1.listen(); }
 
-    }
-    
-    void SOFTWARE_SERIAL_1_CHAR(char t){SOFTWARE_SERIAL_1.write(t);}
-    void SOFTWARE_SERIAL_1_PRINT(String text){SOFTWARE_SERIAL_1.print(text);}
-    void SOFTWARE_SERIAL_1_PRINTLN(String text){ SOFTWARE_SERIAL_1.println(text);}   
-    void SOFTWARE_SERIAL_1_FLUSH(){SOFTWARE_SERIAL_1.flush();} 
+  void SW_SERIAL_1_ECHO(String text)             { SW_SERIAL_1.print(text); }
+  void SW_SERIAL_1_ECHOLN(String text)           { SW_SERIAL_1.println(text); }
+      
 
-    void UPDATE_SOFTWARE_SERIAL_1(){
-        String cmd = "";
+  #if SOFTWARE_SERIAL>1
+   
+    SoftwareSerial SW_SERIAL_2(S_SERIAL_RX_2, S_SERIAL_TX_2); // RX, TX
+   
+    char    _sw_serial_2_received_data[30];
+    uint8_t _sw_serial_2_length = 0;
+    bool    _sw_serial_2_avaliable = false;
 
-        
-        if(SOFTWARE_SERIAL_1.available()) SERIAL_ECHOLN("avaliable");
-        while (SOFTWARE_SERIAL_1.available()) {
-            char inChar = (char)SOFTWARE_SERIAL_1.read();
-             cmd += inChar;
-        }
+    static void SW_SERIAL_2_CHAR(char t)           { SW_SERIAL_2.write(t); }
+    static void SW_SERIAL_2_PRINT(String text)     { SW_SERIAL_2.print(text); }
+    static void SW_SERIAL_2_PRINTLN(String text)   { SW_SERIAL_2.println(text); }
+    static void SW_SERIAL_2_FLUSH()                { SW_SERIAL_2.flush(); }
+    static void SW_SERIAL_2_LISTEN()               { SW_SERIAL_2.listen(); }
 
-        if(cmd != ""){
-          SERIAL_ECHOLN("diff");
-          cmd="";
-        }
-    }
+    void SW_SERIAL_2_ECHO(String text)             { SW_SERIAL_2.print(text); }
+    void SW_SERIAL_2_ECHOLN(String text)           { SW_SERIAL_2.println(text); }
+  
+    #if SOFTWARE_SERIAL>2
 
+      SoftwareSerial SW_SERIAL_3(S_SERIAL_RX_3, S_SERIAL_TX_3); // RX, TX
+   
+      char    _sw_serial_3_received_data[30];
+      uint8_t _sw_serial_3_length = 0;
+      bool    _sw_serial_3_avaliable = false;
 
+      static void SW_SERIAL_3_CHAR(char t)           { SW_SERIAL_2.write(t); }
+      static void SW_SERIAL_3_PRINT(String text)     { SW_SERIAL_2.print(text); }
+      static void SW_SERIAL_3_PRINTLN(String text)   { SW_SERIAL_2.println(text); }
+      static void SW_SERIAL_3_FLUSH()                { SW_SERIAL_2.flush(static ); }
+
+      
+      void SW_SERIAL_3_ECHO(String text)             { SW_SERIAL_3.print(text); }
+      void SW_SERIAL_3_ECHOLN(String text);          { SW_SERIAL_3.println(text); }
+  
+    #endif
+  #endif
 #endif
 
 
-//void cmd_execute();
-
-/*
-  SerialEvent occurs whenever a new data comes in the
-  hardware serial RX.  This routine is run between each
-  time loop() runs, so using delay inside loop can delay
-  response.  Multiple bytes of data may be available.
-*/
-/* 
-void serialEvent2() {
-  while (Serial2.available()) {
-    // get the new byte:
-    char inChar = (char)Serial2.read();
-
-    switch (state) {
-      case 0:
-        if (inChar == '#') state = 1;
-        break;
-      case 1:
-        if (inChar == '$') {
-          cmd = comdata;
-          comdata = "";
-          Cmd_completed = true;
-          cmd_excute();
-          state = 0;
+static void HANDLE_RX_SERIAL_1( uint8_t c ){
+    if(!_sw_serial_1_avaliable){
+        
+        if (_sw_serial_1_length < sizeof( _sw_serial_1_received_data) - 1)  _sw_serial_1_received_data[_sw_serial_1_length++] = c; 
+        
+        if(c == ('\r')) {
+            _sw_serial_1_received_data[_sw_serial_1_length] = '\0';
+            _sw_serial_1_avaliable = true;  
+            _sw_serial_1_length = 0; 
         }
-        else {
-          comdata += inChar;
-        }
-        break;
-      default:
-        break;
     }
-
-  }
 }
 
-void cmd_execute() {
-  if ( cmd == "AskForFileList") {
-    Serial2.print("#TA100/230\tTB56/230\tTC110/112\tPS4\tPP56\tPT02:43:24\tFNmonkey.gco\t$");
-  }
-  if ( cmd == "GoOnPrinting1") {
-    ;//断点打印
-  }
-  if ( cmd == "GoOnPrinting2") {
-   ;//暂停后继续打印
-  }
-  if ( cmd == "PrintingCanceled") { }
-  if ( cmd == "GetInfo") { }
-  if ( cmd == "RefuseInfo") { }
-  if ( cmd == "StartPrinting") { }
-  if ( cmd == "PausePrinting") { }
-  if ( cmd == "ReplaceMaterial") { }
-  if ( cmd == "NozzleHeating225") { }
-  if ( cmd == "BedHeating225") { }
-  if ( cmd == "XHome") { }
-  if ( cmd == "YHome") { }
-  if ( cmd == "ZHome") { }
-  if ( cmd == "AllHome") { }
+static void HANDLE_RX_SERIAL_2( uint8_t c ){
+    if(!_sw_serial_2_avaliable){
+        
+        if (_sw_serial_2_length < sizeof( _sw_serial_2_received_data) - 1)  _sw_serial_2_received_data[_sw_serial_2_length++] = c; 
+        
+        if(c == ('\r')) {
+            _sw_serial_2_received_data[_sw_serial_2_length] = '\0';
+            _sw_serial_2_avaliable = true;  
+            _sw_serial_2_length = 0;
+        }
+    }
 }
-*/
+
+
+void UPDATE_SOFTWARE_SERIAL_1(){
+    
+    if (_sw_serial_1_avaliable){
+        _sw_serial_1_avaliable = false;
+        SERIAL_ECHO("SERIAL_1:");
+        SERIAL_ECHO(_sw_serial_1_received_data);
+        
+        SW_SERIAL_2_LISTEN();
+
+    }else{
+        while(SW_SERIAL_1.available()>0) HANDLE_RX_SERIAL_1(SW_SERIAL_1.read());
+    }
+    
+}
+
+void UPDATE_SOFTWARE_SERIAL_2(){
+    
+    if (_sw_serial_2_avaliable){
+        _sw_serial_2_avaliable = false;;
+        SERIAL_ECHO("SERIAL_2:");
+        SERIAL_ECHO(_sw_serial_2_received_data);
+
+        SW_SERIAL_1_LISTEN();
+
+    }else{
+        while(SW_SERIAL_2.available()>0) HANDLE_RX_SERIAL_2(SW_SERIAL_2.read());
+    }
+    
+}
+
+
+void initialize_software_serial()
+{
+   //SW_SERIAL_1.attachInterrupt( HANDLE_RX_SERIAL_1 );
+    SW_SERIAL_1.begin(S_SERIAL_BAUDRATE_1);
+    SW_SERIAL_1_PRINTLN("serial 1 initialized");
+    
+    #if SOFTWARE_SERIAL > 1
+        //SW_SERIAL_2.attachInterrupt( HANDLE_RX_SERIAL_2 );
+        SW_SERIAL_2.begin(S_SERIAL_BAUDRATE_2);
+        SW_SERIAL_2_PRINTLN("serial 2 initialized");
+       
+        #if SOFTWARE_SERIAL > 2
+            SW_SERIAL_3.begin(S_SERIAL_BAUDRATE_3);
+            SW_SERIAL_3_PRINTLN("serial 3 initialized");
+        
+        #endif
+    #endif
+}
+
