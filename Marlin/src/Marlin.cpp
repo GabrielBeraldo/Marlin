@@ -1105,9 +1105,6 @@ void setup() {
     mmu2.init();
   #endif
 
-  #if SOFTWARE_SERIAL > 0
-    initialize_software_serial();
-  #endif
 }
 
 /**
@@ -1146,10 +1143,20 @@ void loop() {
     if (commands_in_queue < BUFSIZE) get_available_commands();
     
     #if SOFTWARE_SERIAL > 0
-      UPDATE_SOFTWARE_SERIAL_1();
-      UPDATE_SOFTWARE_SERIAL_2();
-    #endif
+    UPDATE_SOFTWARE_SERIAL();
+    
+      ECHO_SOFTWARE_SERIAL_1();
 
+      #if SOFTWARE_SERIAL > 1
+        ECHO_SOFTWARE_SERIAL_2();
+
+        #if SOFTWARE_SERIAL > 2
+          ECHO_SOFTWARE_SERIAL_3();
+
+        #endif  
+      #endif
+    #endif
+    
     advance_command_queue();
     endstops.event_handler();
     idle();

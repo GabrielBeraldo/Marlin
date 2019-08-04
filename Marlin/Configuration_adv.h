@@ -57,17 +57,20 @@
   #define SOFTWARE_SERIAL 2
 #endif
 
+#define S_SERIAL_DATASIZE 70
+#define DEFAULT_SW_SERIAL_BAUDRATE 9600
+
+#define DEFAULT_PH_READ_TIMEOUT 5000
+#define PH_READ_STABLE_CHAR 'E'
+
 #define S_SERIAL_TX_1 42 //AUX2 D42
 #define S_SERIAL_RX_1 A11 //AUX2 A11
-#define S_SERIAL_BAUDRATE_1 9600
 
 #define S_SERIAL_TX_2 44 //AUX2 D44
 #define S_SERIAL_RX_2 A12 //AUX2 A12
-#define S_SERIAL_BAUDRATE_2 9600
 
 #define S_SERIAL_TX_3 -1
 #define S_SERIAL_RX_3 -1
-#define S_SERIAL_BAUDRATE_2 9600
 
 
 // @section temperature

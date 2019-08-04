@@ -31,26 +31,39 @@
 
 #if SOFTWARE_SERIAL > 0
    
-    void initialize_software_serial();
+    bool INITIALIZE_SW_SERIAL(int,int);
+    bool STOP_LISTEN_SW_SERIAL(int);
+    bool LISTEN_TO_SW_SERIAL(int);
+    void UPDATE_SOFTWARE_SERIAL();
+
+    bool GET_PH_READING(int, int);
+
     void UPDATE_SOFTWARE_SERIAL_1();
+    void ECHO_SOFTWARE_SERIAL_1();
 
     void SW_SERIAL_1_ECHO(String);
     void SW_SERIAL_1_ECHOLN(String);
 
+    void SW_SERIAL_1_STOP_LISTENING();
+
     #if SOFTWARE_SERIAL > 1
 
         void UPDATE_SOFTWARE_SERIAL_2();
+        void ECHO_SOFTWARE_SERIAL_2();
         
         void SW_SERIAL_2_ECHO(String);
         void SW_SERIAL_2_ECHOLN(String);
+        void SW_SERIAL_2_STOP_LISTENING();
     
         #if SOFTWARE_SERIAL > 2
-    
-        void UPDATE_SOFTWARE_SERIAL_3();
         
-        void SW_SERIAL_3_ECHO(String);
-        void SW_SERIAL_3_ECHOLN(String);
-    
+            void UPDATE_SOFTWARE_SERIAL_3();
+            void ECHO_SOFTWARE_SERIAL_3();
+            
+            void SW_SERIAL_3_ECHO(String);
+            void SW_SERIAL_3_ECHOLN(String);
+            void SW_SERIAL_3_STOP_LISTENING();
+        
         #endif
     #endif
 #endif

@@ -865,6 +865,14 @@ private:
     static void M1000();
   #endif
 
+  #if SOFTWARE_SERIAL > 0
+    static void M1010();
+    static void M1011();
+    static void M1012();
+
+    static void M1020();
+  #endif
+
   static void T(const uint8_t tool_index);
 
 };

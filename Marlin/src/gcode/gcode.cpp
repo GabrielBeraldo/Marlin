@@ -727,6 +727,14 @@ void GcodeSuite::process_parsed_command(
         case 413: M413(); break;                                  // M413: Enable/disable/query Power-Loss Recovery
         case 1000: M1000(); break;                                // M1000: Resume from power-loss
       #endif
+      
+      #if SOFTWARE_SERIAL > 0
+        case 1010: M1010(); break;                                  // M1010: initialize software serial
+        case 1011: M1011(); break;                                  // M1011: listen to software serial port
+        case 1012: M1012(); break;                                  // M1012: stop listening to software serial port
+      
+        case 1020: M1020(); break;                                  // M1020: wait to receive a stable reading of ph
+      #endif
 
       default: parser.unknown_command_error(); break;
     }
