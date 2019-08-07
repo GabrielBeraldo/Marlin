@@ -1178,31 +1178,20 @@ void prepare_move_to_destination() {
 
       #if ENABLED(ULTRA_LCD) || ENABLED(EXTENSIBLE_UI)
        
-       ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s%s%s" MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : "", ii ? MSG_I : "", jj ? MSG_J : "");
-       
-       /* ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s
-#if NON_E_AXES > 3
-%s
-#if NON_E_AXES > 4
-%s
-#if NON_E_AXES > 5
-%s
-#endif
-#endif
-#endif
- " MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : ""
-          #if NON_E_AXES > 3
-            , ii ? MSG_I : ""
-            #if NON_E_AXES > 4
-              , jj ? MSG_J : ""
-              #if NON_E_AXES > 5
-                , kk ? MSG_K : ""
-              #endif
-            #endif
-          #endif
-        );*/
-
-
+        #if NON_E_AXES > 5
+          ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s%s%s%s" MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : "", ii ? MSG_I : "", jj ? MSG_J : "", kk ? MSG_K : "");
+          
+        #elif NON_E_AXES > 4
+          ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s%s%s" MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : "", ii ? MSG_I : "", jj ? MSG_J : "");
+          
+        #elif NON_E_AXES > 3
+          ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s%s" MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : "", ii ? MSG_I : "");
+      
+        #else
+          ui.status_printf_P(0, PSTR(MSG_HOME " %s%s%s" MSG_FIRST), xx ? MSG_X : "", yy ? MSG_Y : "", zz ? MSG_Z : "");
+                   
+        #endif
+      
       #endif
       return true;
     }

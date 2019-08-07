@@ -83,6 +83,9 @@
   #define VERSION "2.0.0 /20" 
 #endif
 
+#ifdef DEV_PARAMETERS
+  #define VERSION "2.0.0 / DEV_PAR"
+#endif
 // @section info
 
 // User-specified version info of this build to display in [Pronterface, etc] terminal window during
@@ -732,9 +735,9 @@
  */
 //default calibration for module 50
 #ifdef DEV_PARAMETERS
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 31.49, 31.49, 31.49, 31.49, 1000} //e axis in ML  
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 250, 250, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
-  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 500, 500, 500 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 31.49, 31.49, 31.49, 1000} //e axis in ML  
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 250, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
+  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 500, 500 }
 
 #else
 #ifdef MODULE_50

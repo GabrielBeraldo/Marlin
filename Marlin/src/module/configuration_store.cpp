@@ -2050,9 +2050,19 @@ void MarlinSettings::reset(PORTARG_SOLO) {
     planner.max_jerk[Z_AXIS] = DEFAULT_ZJERK;
     
     #if DISABLED(JUNCTION_DEVIATION) || DISABLED(LIN_ADVANCE)
-      planner.max_jerk[I_AXIS] = DEFAULT_IJERK;
-      planner.max_jerk[J_AXIS] = DEFAULT_JJERK;
-      planner.max_jerk[E_AXIS] = DEFAULT_EJERK;
+      #if NON_E_AXES > 3
+        planner.max_jerk[I_AXIS] = DEFAULT_IJERK;
+        
+        #if NON_E_AXES > 4
+          planner.max_jerk[J_AXIS] = DEFAULT_JJERK;
+          
+          #if NON_E_AXES > 5
+            planner.max_jerk[E_AXIS] = DEFAULT_EJERK;
+          
+          #endif
+        #endif
+      #endif
+
     #endif
   #endif
 
@@ -2493,8 +2503,17 @@ void MarlinSettings::reset(PORTARG_SOLO) {
     SERIAL_ECHOPAIR_P(port, "  M203 X", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[X_AXIS]));
     SERIAL_ECHOPAIR_P(port, " Y", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[Y_AXIS]));
     SERIAL_ECHOPAIR_P(port, " Z", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[Z_AXIS]));
-    SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[I_AXIS]));
-    SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[J_AXIS]));
+
+    #if NON_E_AXES > 3
+      SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[I_AXIS]));
+        #if NON_E_AXES > 4
+          SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[J_AXIS]));
+          #if NON_E_AXES > 5
+            SERIAL_ECHOPAIR_P(port, " K", LINEAR_UNIT(planner.settings.max_feedrate_mm_s[K_AXIS]));
+          #endif
+        #endif
+      #endif
+      
     #if DISABLED(DISTINCT_E_FACTORS)
       SERIAL_ECHOPAIR_P(port, " E", VOLUMETRIC_UNIT(planner.settings.max_feedrate_mm_s[E_AXIS]));
     #endif
@@ -2512,8 +2531,16 @@ void MarlinSettings::reset(PORTARG_SOLO) {
     SERIAL_ECHOPAIR_P(port, "  M201 X", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[X_AXIS]));
     SERIAL_ECHOPAIR_P(port, " Y", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[Y_AXIS]));
     SERIAL_ECHOPAIR_P(port, " Z", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[Z_AXIS]));
-    SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[I_AXIS]));
-    SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[J_AXIS]));
+    #if NON_E_AXES > 3
+      SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[I_AXIS]));
+      #if NON_E_AXES > 4
+        SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[J_AXIS]));
+        #if NON_E_AXES > 5
+          SERIAL_ECHOPAIR_P(port, " K", LINEAR_UNIT(planner.settings.max_acceleration_mm_per_s2[K_AXIS]));
+        #endif
+      #endif
+    #endif
+
     #if DISABLED(DISTINCT_E_FACTORS)
       SERIAL_ECHOPAIR_P(port, " E", VOLUMETRIC_UNIT(planner.settings.max_acceleration_mm_per_s2[E_AXIS]));
     #endif
@@ -2558,8 +2585,16 @@ void MarlinSettings::reset(PORTARG_SOLO) {
       SERIAL_ECHOPAIR_P(port, " X", LINEAR_UNIT(planner.max_jerk[X_AXIS]));
       SERIAL_ECHOPAIR_P(port, " Y", LINEAR_UNIT(planner.max_jerk[Y_AXIS]));
       SERIAL_ECHOPAIR_P(port, " Z", LINEAR_UNIT(planner.max_jerk[Z_AXIS]));
-      SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.max_jerk[I_AXIS]));
-      SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.max_jerk[J_AXIS]));
+
+      #if NON_E_AXES > 3
+        SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.max_jerk[I_AXIS]));
+        #if NON_E_AXES > 4
+          SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.max_jerk[J_AXIS]));
+          #if NON_E_AXES > 5
+            SERIAL_ECHOPAIR_P(port, " K", LINEAR_UNIT(planner.max_jerk[K_AXIS]));
+          #endif
+        #endif
+      #endif
       #if DISABLED(JUNCTION_DEVIATION) || DISABLED(LIN_ADVANCE)
         SERIAL_ECHOPAIR_P(port, " E", LINEAR_UNIT(planner.max_jerk[E_AXIS]));
       #endif

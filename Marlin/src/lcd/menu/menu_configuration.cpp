@@ -322,8 +322,11 @@ void menu_configuration() {
 
   #if DISABLED(SLIM_LCD_MENUS)
     // Preheat configurations
-    MENU_ITEM(submenu, MSG_PREHEAT_1_SETTINGS, menu_preheat_material1_settings);
-    MENU_ITEM(submenu, MSG_PREHEAT_2_SETTINGS, menu_preheat_material2_settings);
+    #ifdef STOCK_MARLIN_MENU
+      MENU_ITEM(submenu, MSG_PREHEAT_1_SETTINGS, menu_preheat_material1_settings);
+      MENU_ITEM(submenu, MSG_PREHEAT_2_SETTINGS, menu_preheat_material2_settings);
+    #endif
+  
   #endif
 
   #if ENABLED(EEPROM_SETTINGS)

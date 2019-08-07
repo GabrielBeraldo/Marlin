@@ -111,6 +111,10 @@ void menu_change_filament();
 void menu_info();
 void menu_led();
 
+#ifndef STOCK_MARLIN_MENU 
+  void lcd_pump_menu();
+#endif
+
 #if ENABLED(MIXING_EXTRUDER)
   void menu_mixer();
 #endif
@@ -179,9 +183,15 @@ void menu_main() {
 
     MENU_ITEM(submenu, MSG_MOTION, menu_motion);
   }
+  
+  #ifndef STOCK_MARLIN_MENU
+    MENU_ITEM(submenu, MSG_PUMP_MENU, lcd_pump_menu);
+  #endif
 
-  MENU_ITEM(submenu, MSG_TEMPERATURE, menu_temperature);
-
+  #ifdef STOCK_MARLIN_MENU
+    MENU_ITEM(submenu, MSG_TEMPERATURE, menu_temperature);
+  #endif
+  
   #if ENABLED(MIXING_EXTRUDER)
     MENU_ITEM(submenu, MSG_MIXER, menu_mixer);
   #endif

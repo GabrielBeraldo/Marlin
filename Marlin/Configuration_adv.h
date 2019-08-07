@@ -39,6 +39,9 @@
 //=============================  MODS   ====================================
 //===========================================================================
 
+//TO SHOW THE DEFAULT MENU ITEM 
+//#define STOCK_MARLIN_MENU
+
 #define INITIALIZE_SERINGE_PUMP_PATH        _UxGT("ROUTINES/INITMO~1.GCO") // example for filename.gcode: PATH/FILENA~1.GCO
 #define FLUSH_SERINGE_PUMP_PATH             _UxGT("ROUTINES/FLUSHM~1.GCO")
 
@@ -541,7 +544,7 @@
 // @section lcd
 
 #if ENABLED(ULTIPANEL)
-  #define MANUAL_FEEDRATE {50*60, 50*60, 4*60, 50*60, 50*60, 10*60} // Feedrates for manual moves along X, Y, Z, E from panel
+  #define MANUAL_FEEDRATE {50*60, 50*60, 4*60, 50*60, 10*60} // Feedrates for manual moves along X, Y, Z, E from panel
   #define MANUAL_E_MOVES_RELATIVE // Show LCD extruder moves as relative rather than absolute positions
   #define ULTIPANEL_FEEDMULTIPLY  // Comment to disable setting feedrate multiplier via encoder
 #endif

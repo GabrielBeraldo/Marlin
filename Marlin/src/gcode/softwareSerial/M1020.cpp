@@ -20,10 +20,12 @@
  *
  */
 
+
 #include "../gcode.h"
 #include "../../module/stepper.h"
 #include "../../inc/MarlinConfig.h"
 
+#if SOFTWARE_SERIAL > 1
 
 
 void GcodeSuite::M1020() {
@@ -50,3 +52,5 @@ void GcodeSuite::M1020() {
     
 
 }
+
+#endif

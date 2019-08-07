@@ -448,31 +448,19 @@ void Endstops::event_handler() {
 
     #if ENABLED(ULTRA_LCD)
 
-    ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c %c %c"), chrX, chrY, chrZ, chrI, chrJ, chrP);
-    /* 
-      ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c
-#if NON_E_AXES > 3
- %c
-#if NON_E_AXES > 4
- %c
-#if NON_E_AXES > 5
- %c
-#endif
-#endif
-#endif
-"), chrX, chrY, chrZ
-      #if NON_E_AXES > 3
-        , chrI
-        #if NON_E_AXES > 4
-          , chrJ
-          #if NON_E_AXES > 5
-            , chrK
-          #endif
-        #endif
-      #endif 
-      , chrP);
-    #endif
-*/
+      #if NON_E_AXES > 5
+        ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c %c %c %c"), chrX, chrY, chrZ, chrI, chrJ, chrK, chrP);
+        
+      #elif NON_E_AXES > 4
+        ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c %c %c"), chrX, chrY, chrZ, chrI, chrJ, chrP);
+          
+      #elif NON_E_AXES > 3
+        ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c %c"), chrX, chrY, chrZ, chrI, chrP);
+        
+      #else
+        ui.status_printf_P(0, PSTR(MSG_LCD_ENDSTOPS " %c %c %c %c"), chrX, chrY, chrZ, chrP);
+      #endif
+        
 
   #endif
 

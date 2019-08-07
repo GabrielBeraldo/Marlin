@@ -24,6 +24,7 @@
 #include "../../module/stepper.h"
 #include "../../inc/MarlinConfig.h"
 
+#if SOFTWARE_SERIAL > 0
 
 
 void GcodeSuite::M1010() {
@@ -75,3 +76,5 @@ void GcodeSuite::M1012() {
   SERIAL_EOL();
 
 }
+
+#endif

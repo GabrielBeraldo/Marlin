@@ -33,8 +33,17 @@ void report_M92(
   SERIAL_ECHOPAIR_P(port, " M92 X", LINEAR_UNIT(planner.settings.axis_steps_per_mm[X_AXIS]));
   SERIAL_ECHOPAIR_P(port, " Y", LINEAR_UNIT(planner.settings.axis_steps_per_mm[Y_AXIS]));
   SERIAL_ECHOPAIR_P(port, " Z", LINEAR_UNIT(planner.settings.axis_steps_per_mm[Z_AXIS]));
-  SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.axis_steps_per_mm[I_AXIS]));
-  SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.axis_steps_per_mm[J_AXIS]));
+  #if NON_E_AXES >3
+    SERIAL_ECHOPAIR_P(port, " I", LINEAR_UNIT(planner.settings.axis_steps_per_mm[I_AXIS]));
+    #if NON_E_AXES >4
+      SERIAL_ECHOPAIR_P(port, " J", LINEAR_UNIT(planner.settings.axis_steps_per_mm[J_AXIS]));
+      #if NON_E_AXES >5
+        SERIAL_ECHOPAIR_P(port, " K", LINEAR_UNIT(planner.settings.axis_steps_per_mm[K_AXIS]));  
+      #endif
+    #endif
+  #endif
+  
+  
   #if DISABLED(DISTINCT_E_FACTORS)
     SERIAL_ECHOPAIR_P(port, " E", VOLUMETRIC_UNIT(planner.settings.axis_steps_per_mm[E_AXIS]));
   #endif

@@ -107,6 +107,38 @@ static void _lcd_move_xyz(PGM_P name, AxisEnum axis) {
           #if ENABLED(MAX_SOFTWARE_ENDSTOP_Z)
             max = soft_endstop_max[Z_AXIS];
           #endif
+        
+        #if NON_E_AXES > 3
+          case I_AXIS:
+            #if ENABLED(MIN_SOFTWARE_ENDSTOP_I)
+              min = soft_endstop_min[I_AXIS];
+            #endif
+            #if ENABLED(MAX_SOFTWARE_ENDSTOP_I)
+              max = soft_endstop_max[I_AXIS];
+            #endif
+      
+          #if NON_E_AXES > 4
+            case J_AXIS: 
+                #if ENABLED(MIN_SOFTWARE_ENDSTOP_J)
+                  min = soft_endstop_min[J_AXIS];
+                #endif
+                #if ENABLED(MAX_SOFTWARE_ENDSTOP_J)
+                  max = soft_endstop_max[J_AXIS];
+                #endif
+
+            #if NON_E_AXES > 5
+              case K_AXIS:
+                  #if ENABLED(MIN_SOFTWARE_ENDSTOP_K)
+                    min = soft_endstop_min[K_AXIS];
+                  #endif
+                  #if ENABLED(MAX_SOFTWARE_ENDSTOP_K)
+                    max = soft_endstop_max[K_AXIS];
+                  #endif
+            
+            #endif  
+          #endif
+        #endif
+
         default: break;
       }
     #endif // HAS_SOFTWARE_ENDSTOPS

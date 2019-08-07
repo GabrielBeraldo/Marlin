@@ -54,14 +54,14 @@
       uint8_t _sw_serial_3_length = 0;
       bool    _sw_serial_3_avaliable = false;
 
-      static void SW_SERIAL_3_CHAR(char t)           { SW_SERIAL_2.write(t); }
-      static void SW_SERIAL_3_PRINT(String text)     { SW_SERIAL_2.print(text); }
-      static void SW_SERIAL_3_PRINTLN(String text)   { SW_SERIAL_2.println(text); }
-      static void SW_SERIAL_3_FLUSH()                { SW_SERIAL_2.flush(static ); }
-
+      static void SW_SERIAL_3_CHAR(char t)           { SW_SERIAL_3.write(t); }
+      static void SW_SERIAL_3_PRINT(String text)     { SW_SERIAL_3.print(text); }
+      static void SW_SERIAL_3_PRINTLN(String text)   { SW_SERIAL_3.println(text); }
+      static void SW_SERIAL_3_FLUSH()                { SW_SERIAL_3.flush (); }
+      static void SW_SERIAL_3_LISTEN()               { SW_SERIAL_3.listen(); }
       
       void SW_SERIAL_3_ECHO(String text)             { SW_SERIAL_3.print(text); }
-      void SW_SERIAL_3_ECHOLN(String text);          { SW_SERIAL_3.println(text); }
+      void SW_SERIAL_3_ECHOLN(String text)           { SW_SERIAL_3.println(text); }
       void SW_SERIAL_3_STOP_LISTENING()              { SW_SERIAL_3.end();}
     
     #endif
@@ -184,6 +184,8 @@ void UPDATE_SOFTWARE_SERIAL(){
 
 bool LISTEN_TO_SW_SERIAL(int serial_port){
   
+  #if SOFTWARE_SERIAL > 0
+
   STOP_LISTEN_SW_SERIAL(0);
 
   switch(serial_port){
@@ -212,11 +214,13 @@ bool LISTEN_TO_SW_SERIAL(int serial_port){
   
       default: return false; break;
   }
+
+  #endif
 }
 
 
 bool STOP_LISTEN_SW_SERIAL(int serial_port){
-  
+  #if SOFTWARE_SERIAL > 0
   switch(serial_port){
     
     case 1 : 
@@ -253,10 +257,11 @@ bool STOP_LISTEN_SW_SERIAL(int serial_port){
       
       return true; break;
   }
+  #endif
 }
 
 bool INITIALIZE_SW_SERIAL(int serial_port, int port_baudrate){
-  
+  #if SOFTWARE_SERIAL > 0
   switch(serial_port){
     
     case 1 : 
@@ -284,6 +289,7 @@ bool INITIALIZE_SW_SERIAL(int serial_port, int port_baudrate){
         return false; break;
       #endif
   }
+  #endif
 }
 
 bool HANDLE_PH_READING_DATA(const char* received_data){
@@ -325,7 +331,6 @@ bool HANDLE_PH_READING_DATA(const char* received_data){
     data_lenght++;
   }
   
-
   if(_ph_read_is_stable){
     STOP_LISTEN_SW_SERIAL(0);
 
@@ -344,7 +349,8 @@ bool HANDLE_PH_READING_DATA(const char* received_data){
 }
 
 bool GET_PH_READING( int serial_port, int port_timeout){
-  
+  #if SOFTWARE_SERIAL > 0
+
   unsigned long _sw_serial_reading_time = millis();
   
   if(!LISTEN_TO_SW_SERIAL(serial_port)){
@@ -398,6 +404,6 @@ bool GET_PH_READING( int serial_port, int port_timeout){
         #endif 
     }
   }
-
+  #endif
 }
 

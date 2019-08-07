@@ -697,12 +697,17 @@ void menu_advanced_settings() {
     MENU_ITEM(submenu, MSG_TMC_DRIVERS, menu_tmc);
   #endif
 
-  #if SHOW_MENU_ADVANCED_TEMPERATURE
-    MENU_ITEM(submenu, MSG_TEMPERATURE, menu_advanced_temperature);
+  #ifdef STOCK_MARLIN_MENU
+    #if SHOW_MENU_ADVANCED_TEMPERATURE
+      MENU_ITEM(submenu, MSG_TEMPERATURE, menu_advanced_temperature);
+    #endif
   #endif
 
   #if DISABLED(NO_VOLUMETRICS) || ENABLED(ADVANCED_PAUSE_FEATURE)
-    MENU_ITEM(submenu, MSG_FILAMENT, menu_advanced_filament);
+    #ifdef STOCK_MARLIN_MENU
+      MENU_ITEM(submenu, MSG_FILAMENT, menu_advanced_filament);
+    #endif
+    
   #elif ENABLED(LIN_ADVANCE)
     #if EXTRUDERS == 1
       MENU_ITEM_EDIT(float52, MSG_ADVANCE_K, &planner.extruder_advance_K[0], 0, 999);
