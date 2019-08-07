@@ -420,15 +420,15 @@ void GcodeSuite::G28(const bool always_home_all) {
     #endif // Z_HOME_DIR < 0
 
     #if NON_E_AXES > 3
-      if (home_all || homeI) {
+      if (homeI) {
         homeaxis(I_AXIS);
       }
       #if NON_E_AXES > 4
-        if (home_all || homeJ) {
+        if (homeJ) {
           homeaxis(J_AXIS);
         }
         #if NON_E_AXES > 5
-          if (home_all || homeK) {
+          if (homeK) {
             homeaxis(K_AXIS);
           }
         #endif
