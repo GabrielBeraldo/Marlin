@@ -30,6 +30,7 @@
 
 #include "menu.h"
 #include "../../module/planner.h"
+#include "../../module/printcounter.h"
 
 #if DISABLED(NO_VOLUMETRICS)
   #include "../../gcode/parser.h"
@@ -656,6 +657,18 @@ DEFINE_PIDTEMP_FUNCS(0);
 
   #endif
 
+  #if HAS_SERVICE_INTERVALS && ENABLED(PRINTCOUNTER)
+    #if SERVICE_INTERVAL_1 > 0
+      void menu_service1();
+    #endif
+    #if SERVICE_INTERVAL_2 > 0
+      void menu_service2();
+    #endif
+    #if SERVICE_INTERVAL_3 > 0
+      void menu_service3();
+    #endif
+  #endif
+
 #endif // !SLIM_LCD_MENUS
 
 void menu_advanced_settings() {
@@ -752,6 +765,21 @@ void menu_advanced_settings() {
   #if ENABLED(EEPROM_SETTINGS) && DISABLED(SLIM_LCD_MENUS)
     MENU_ITEM(submenu, MSG_INIT_EEPROM, lcd_init_eeprom_confirm);
   #endif
+
+
+  
+  #if HAS_SERVICE_INTERVALS && ENABLED(PRINTCOUNTER)
+    #if SERVICE_INTERVAL_1 > 0
+      MENU_ITEM(submenu, SERVICE_NAME_1, menu_service1);
+    #endif
+    #if SERVICE_INTERVAL_2 > 0
+      MENU_ITEM(submenu, SERVICE_NAME_2, menu_service2);
+    #endif
+    #if SERVICE_INTERVAL_3 > 0
+      MENU_ITEM(submenu, SERVICE_NAME_3, menu_service3);
+    #endif
+  #endif
+
 
   END_MENU();
 }

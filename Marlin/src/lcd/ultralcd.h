@@ -482,6 +482,7 @@ public:
     #endif
     static void update_buttons();
     static inline bool button_pressed() { return BUTTON_CLICK(); }
+    static bool button_started_pressed();
     #if ENABLED(AUTO_BED_LEVELING_UBL) || ENABLED(G26_MESH_VALIDATION)
       static void wait_for_release();
     #endif

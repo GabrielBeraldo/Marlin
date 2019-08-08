@@ -1105,6 +1105,11 @@ void setup() {
     mmu2.init();
   #endif
 
+  if(ui.button_started_pressed()){
+    SERIAL_ECHO("ADMIN MODE ENABLED");
+    LCD_MESSAGEPGM("ADMIN MODE");
+  } 
+  
 }
 
 /**

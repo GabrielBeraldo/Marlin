@@ -166,11 +166,25 @@ void MarlinUI::set_font(const MarlinFont font_nr) {
       #ifndef STRING_SPLASH_LINE2
         const uint8_t txt1X = width - (sizeof(STRING_SPLASH_LINE1) - 1) * (MENU_FONT_WIDTH);
         u8g.drawStr(txt1X, (height + MENU_FONT_HEIGHT) / 2, STRING_SPLASH_LINE1);
+
       #else
+        #ifdef STRING_SPLASH_LINE2_TOTAL_JOB_TIME
+                
+          char total_job_time[21];
+          duration_t totalJobTime = print_job_timer.totalTime();
+          totalJobTime.toString(total_job_time);
+       
+          const uint8_t txt1X = (width - (sizeof(STRING_SPLASH_LINE1) - 1) * (MENU_FONT_WIDTH)) / 2,
+                        txt2X = (width - (strlen(total_job_time) - 1) * (MENU_FONT_WIDTH)) / 2;
+          u8g.drawStr(txt1X, height - (MENU_FONT_HEIGHT) * 3 / 2, STRING_SPLASH_LINE1);
+          u8g.drawStr(txt2X, height - (MENU_FONT_HEIGHT) * 1 / 2, total_job_time);
+       
+        #else  
         const uint8_t txt1X = (width - (sizeof(STRING_SPLASH_LINE1) - 1) * (MENU_FONT_WIDTH)) / 2,
                       txt2X = (width - (sizeof(STRING_SPLASH_LINE2) - 1) * (MENU_FONT_WIDTH)) / 2;
         u8g.drawStr(txt1X, height - (MENU_FONT_HEIGHT) * 3 / 2, STRING_SPLASH_LINE1);
         u8g.drawStr(txt2X, height - (MENU_FONT_HEIGHT) * 1 / 2, STRING_SPLASH_LINE2);
+        #endif
       #endif
     } while (u8g.nextPage());
     safe_delay(BOOTSCREEN_TIMEOUT);

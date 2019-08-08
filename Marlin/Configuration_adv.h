@@ -42,6 +42,10 @@
 //TO SHOW THE DEFAULT MENU ITEM 
 //#define STOCK_MARLIN_MENU
 
+//THIS WILL HIDE CONFIGURATION OPTIONS IN MENU, UNLESS THE PRINTER WAS  POWERED ON WITH THE LCD BUTTON PRESSED
+//TO KEEP CONFIGURATIONS SECURE UNCOMMENT THIS LINE
+#define CONFIGURATION_SECURE
+
 #define INITIALIZE_SERINGE_PUMP_PATH        _UxGT("ROUTINES/INITMO~1.GCO") // example for filename.gcode: PATH/FILENA~1.GCO
 #define FLUSH_SERINGE_PUMP_PATH             _UxGT("ROUTINES/FLUSHM~1.GCO")
 
@@ -57,7 +61,7 @@
 
 //TO USE ENDSTOP INTERRUPTS YOU MUST NOT USE ANY ADITIONAL SOFTWARE SERIAL
 #ifndef ENDSTOP_INTERRUPTS_FEATURE
-  #define SOFTWARE_SERIAL 2
+  #define SOFTWARE_SERIAL 0
 #endif
 
 #define S_SERIAL_DATASIZE 70
@@ -444,20 +448,20 @@
 // @section homing
 
 // Homing hits each endstop, retracts by these distances, then does a slower bump.
-#define X_HOME_BUMP_MM 5
-#define Y_HOME_BUMP_MM 5
-#define Z_HOME_BUMP_MM 2
+#define X_HOME_BUMP_MM 10
+#define Y_HOME_BUMP_MM 10
+#define Z_HOME_BUMP_MM 10
 #if NON_E_AXES > 3
-  #define I_HOME_BUMP_MM 2
+  #define I_HOME_BUMP_MM 1
   #if NON_E_AXES > 4
-    #define J_HOME_BUMP_MM 2
+    #define J_HOME_BUMP_MM 1
     #if NON_E_AXES > 5
-      #define K_HOME_BUMP_MM 2
+      #define K_HOME_BUMP_MM 1
     #endif
   #endif
 #endif
 
-#define HOMING_BUMP_DIVISOR ARRAY_N(NON_E_AXES, 2, 2, 2, 2, 2, 2) // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#define HOMING_BUMP_DIVISOR ARRAY_N(NON_E_AXES, 5, 5, 5, 2, 2, 2) // Re-Bump Speed Divisor (Divides the Homing Feedrate)
 
 //#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
 
@@ -2342,15 +2346,16 @@
 /**
  * Advanced Print Counter settings
  */
+
 #if ENABLED(PRINTCOUNTER)
   #define SERVICE_WARNING_BUZZES  3
   // Activate up to 3 service interval watchdogs
-  //#define SERVICE_NAME_1      "Service S"
-  //#define SERVICE_INTERVAL_1  100 // print hours
-  //#define SERVICE_NAME_2      "Service L"
+  #define SERVICE_NAME_1      "Service"
+  #define SERVICE_INTERVAL_1  100 // print hours
+  //#define SERVICE_NAME_2      "Service required! 2"
   //#define SERVICE_INTERVAL_2  200 // print hours
-  //#define SERVICE_NAME_3      "Service 3"
-  //#define SERVICE_INTERVAL_3    1 // print hours
+  //#define SERVICE_NAME_3      "Service required! 3"
+  //#define SERVICE_INTERVAL_3   300 // print hours
 #endif
 
 // @section develop

@@ -69,8 +69,8 @@
 //
 
 //select machine model by the differences
-#define MODULE_50 
-//#define MODULE_20
+//#define MODULE_50 
+#define MODULE_20
 //#define DEV_PARAMETERS 
 
 
@@ -93,8 +93,13 @@
 // build by the user have been successfully uploaded into firmware.
 #define STRING_CONFIG_H_AUTHOR "Gabriel S. Beraldo" // Who made the changes.
 #define SHOW_BOOTSCREEN
-#define STRING_SPLASH_LINE1 "" // will be shown during bootup in line 1
-#define STRING_SPLASH_LINE2 VERSION         // will be shown during bootup in line 2
+#define STRING_SPLASH_LINE1 VERSION // will be shown during bootup in line 1
+#define STRING_SPLASH_LINE2 ""  // will be shown during bootup in line 2
+
+// if defined STRING_SPLASH_LINE2_TOTAL_JOB_TIME 
+// it will show total job time of the machine in line 2 during boot        
+#define STRING_SPLASH_LINE2_TOTAL_JOB_TIME 
+
 
 /**
  * *** VENDORS PLEASE READ ***
@@ -164,7 +169,7 @@
 // This defines the number of axes that are not used for extruders (axes that benefit from endstops and homing).
 // This must be set to 3 also if one or more of the positioning axes are driven by multiple stepper motors. Only increase 
 // for robots with additional axes (tools apart from extruders that are driven by stepper motors) 
-#define NON_E_AXES 5
+#define NON_E_AXES 4
 
 // @section extruder
 
@@ -745,15 +750,15 @@
   #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 12, 12, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
   #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 9, 9, 500 }
 
-#elif MODULE_20
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 52.49, 52.49 , 912.35, 912.35, 1000} //e axis in ML 
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250 , 12, 12, 250 }
-  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 9, 9, 500 }
+#endif
+#ifdef MODULE_20
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 80, 1666, 1000} //e axis in ML 
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 4, 250 }
+  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 4, 500 }
 
   //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
 #endif
 #endif
-
 
 /**
  * Default Acceleration (change/s) change = mm/s
@@ -1223,7 +1228,7 @@
  * Turn on with the command 'M111 S32'.
  * NOTE: Requires a lot of PROGMEM!
  */
-#define DEBUG_LEVELING_FEATURE
+//#define DEBUG_LEVELING_FEATURE
 
 #if ENABLED(MESH_BED_LEVELING) || ENABLED(AUTO_BED_LEVELING_BILINEAR) || ENABLED(AUTO_BED_LEVELING_UBL)
   // Gradually reduce leveling correction until a set height is reached,
@@ -1390,11 +1395,11 @@
 #define HOMING_FEEDRATE_XY (50*60)
 #define HOMING_FEEDRATE_Z  (50*60)
 #if NON_E_AXES > 3
-  #define HOMING_FEEDRATE_I (2*60)
+  #define HOMING_FEEDRATE_I (1*60)
   #if NON_E_AXES > 4
-    #define HOMING_FEEDRATE_J (2*60)
+    #define HOMING_FEEDRATE_J (1*60)
     #if NON_E_AXES > 5
-      #define HOMING_FEEDRATE_K (2*60)
+      #define HOMING_FEEDRATE_K (1*60)
     #endif
   #endif
 #endif
@@ -1626,7 +1631,7 @@
  *
  * View the current statistics with M78.
  */
-//#define PRINTCOUNTER
+#define PRINTCOUNTER
 
 //=============================================================================
 //============================= LCD and SD support ============================

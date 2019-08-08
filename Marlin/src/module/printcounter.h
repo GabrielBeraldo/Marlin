@@ -164,6 +164,12 @@ class PrintCounter: public Stopwatch {
     static void showStats();
 
     /**
+     * return total time, to be used on boot screen
+     * 
+     */
+    duration_t totalTime();
+
+    /**
      * @brief Return the currently loaded statistics
      * @details Return the raw data, in the same structure used internally
      */

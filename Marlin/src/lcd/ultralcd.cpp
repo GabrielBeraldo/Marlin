@@ -194,6 +194,9 @@ millis_t next_button_update_ms;
 
 #endif
 
+bool button_start_state = false;
+bool MarlinUI::button_started_pressed(){ return button_start_state;}
+
 void MarlinUI::init() {
 
   init_lcd();
@@ -263,6 +266,10 @@ void MarlinUI::init() {
   #if HAS_TRINAMIC && HAS_LCD_MENU
     init_tmc_section();
   #endif
+
+
+  button_start_state = button_pressed();
+  
 }
 
 bool MarlinUI::get_blink() {

@@ -119,17 +119,6 @@ void menu_led();
   void menu_mixer();
 #endif
 
-#if HAS_SERVICE_INTERVALS && ENABLED(PRINTCOUNTER)
-  #if SERVICE_INTERVAL_1 > 0
-    void menu_service1();
-  #endif
-  #if SERVICE_INTERVAL_2 > 0
-    void menu_service2();
-  #endif
-  #if SERVICE_INTERVAL_3 > 0
-    void menu_service3();
-  #endif
-#endif
 
 void menu_main() {
   START_MENU();
@@ -185,7 +174,7 @@ void menu_main() {
   }
   
   #ifndef STOCK_MARLIN_MENU
-    MENU_ITEM(submenu, MSG_PUMP_MENU, lcd_pump_menu);
+    if(card_detected && !card_open) MENU_ITEM(submenu, MSG_PUMP_MENU, lcd_pump_menu);
   #endif
 
   #ifdef STOCK_MARLIN_MENU
@@ -200,8 +189,12 @@ void menu_main() {
     if (!busy) MENU_ITEM(submenu, MSG_MMU2_MENU, menu_mmu2);
   #endif
 
-  MENU_ITEM(submenu, MSG_CONFIGURATION, menu_configuration);
-
+  #ifdef CONFIGURATION_SECURE
+    if(ui.button_started_pressed()) MENU_ITEM(submenu, MSG_CONFIGURATION, menu_configuration);
+  #else
+    MENU_ITEM(submenu, MSG_CONFIGURATION, menu_configuration);
+  #endif
+  
   #if ENABLED(CUSTOM_USER_MENUS)
     MENU_ITEM(submenu, MSG_USER_MENU, menu_user);
   #endif
@@ -258,18 +251,6 @@ void menu_main() {
       MENU_ITEM(function, MSG_NO_CARD, NULL);
     }
   #endif // HAS_ENCODER_WHEEL && SDSUPPORT
-
-  #if HAS_SERVICE_INTERVALS && ENABLED(PRINTCOUNTER)
-    #if SERVICE_INTERVAL_1 > 0
-      MENU_ITEM(submenu, SERVICE_NAME_1, menu_service1);
-    #endif
-    #if SERVICE_INTERVAL_2 > 0
-      MENU_ITEM(submenu, SERVICE_NAME_2, menu_service2);
-    #endif
-    #if SERVICE_INTERVAL_3 > 0
-      MENU_ITEM(submenu, SERVICE_NAME_3, menu_service3);
-    #endif
-  #endif
 
   END_MENU();
 }

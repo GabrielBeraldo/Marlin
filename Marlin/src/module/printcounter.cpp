@@ -186,7 +186,7 @@ void PrintCounter::showStats() {
 
   SERIAL_ECHOPGM(MSG_STATS);
 
-  SERIAL_ECHOPGM("Prints: ");
+  SERIAL_ECHOPGM("Jobs: ");
   SERIAL_ECHO(data.totalPrints);
 
   SERIAL_ECHOPGM(", Finished: ");
@@ -224,13 +224,15 @@ void PrintCounter::showStats() {
   #endif
 
   SERIAL_EOL();
+  /* 
   SERIAL_ECHOPGM(MSG_STATS);
 
   SERIAL_ECHOPGM("Filament used: ");
   SERIAL_ECHO(data.filamentUsed / 1000);
   SERIAL_CHAR('m');
 
-  SERIAL_EOL();
+  SERIAL_EOL();  
+  */
 
   #if SERVICE_INTERVAL_1 > 0
     _service_when(buffer, PSTR(SERVICE_NAME_1), data.nextService1);
@@ -242,6 +244,8 @@ void PrintCounter::showStats() {
     _service_when(buffer, PSTR(SERVICE_NAME_3), data.nextService3);
   #endif
 }
+
+duration_t PrintCounter::totalTime(){ return data.printTime; }
 
 void PrintCounter::tick() {
   if (!isRunning()) return;
