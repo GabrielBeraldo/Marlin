@@ -26,7 +26,7 @@
 
 #include <arduino.h>
 #include <SoftwareSerial.h>
-#include <NeoSWSerial.h>
+//#include <NeoSWSerial.h>
 
 
 #if SOFTWARE_SERIAL > 0

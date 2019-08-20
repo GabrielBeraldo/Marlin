@@ -73,18 +73,37 @@
 #define MODULE_20
 //#define DEV_PARAMETERS 
 
+#define USE_X_AXIS
+#define USE_Y_AXIS
+#define USE_Z_AXIS
+#define USE_E_AXIS
 
+#define SHOW_X_STATUS
+#define SHOW_Y_STATUS
+//#define SHOW_Z_STATUS
+#define SHOW_I_STATUS
+//#define SHOW_J_STATUS
+//#define SHOW_K_STATUS
 
 #ifdef MODULE_50
-  #define VERSION "2.0.0 /50" 
+  #define VERSION "2.0.0 /50"
+  #define SYRINGE_SIZE_I 50
+  #define SYRINGE_SIZE_J 50
+  #define SYRINGE_SIZE_K 50 
 #endif
 
 #ifdef MODULE_20
   #define VERSION "2.0.0 /20" 
+  #define SYRINGE_SIZE_I 20
+  #define SYRINGE_SIZE_J 20
+  #define SYRINGE_SIZE_K 20
 #endif
 
 #ifdef DEV_PARAMETERS
   #define VERSION "2.0.0 / DEV_PAR"
+  #define SYRINGE_SIZE_I 100
+  #define SYRINGE_SIZE_J 100
+  #define SYRINGE_SIZE_K 100
 #endif
 // @section info
 
@@ -653,7 +672,7 @@
 #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #define Z_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
 #define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-#define J_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+#define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define K_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
 #define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
@@ -746,9 +765,9 @@
 
 #else
 #ifdef MODULE_50
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 52.49, 52.49, 477.87, 477.87, 1000} //e axis in ML  
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 12, 12, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
-  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 9, 9, 500 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 52.49, 52.49, 477.87, 1000} //e axis in ML  
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 12, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
+  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 4, 500 }
 
 #endif
 #ifdef MODULE_20
@@ -1095,13 +1114,13 @@
 #define Z_MAX_POS 200
 #if NON_E_AXES > 3
   #define I_MIN_POS 0
-  #define I_MAX_POS 100
+  #define I_MAX_POS SYRINGE_SIZE_I
   #if NON_E_AXES > 4
     #define J_MIN_POS 0
-    #define J_MAX_POS 100
+    #define J_MAX_POS SYRINGE_SIZE_J
     #if NON_E_AXES > 5
       #define K_MIN_POS 0
-      #define K_MAX_POS 50
+      #define K_MAX_POS SYRINGE_SIZE_K
     #endif
   #endif
 #endif
@@ -1723,13 +1742,13 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-//#define ENCODER_PULSES_PER_STEP 4
+#define ENCODER_PULSES_PER_STEP 4
 
 //
 // Use this option to override the number of step signals required to
 // move between next/prev menu items.
 //
-//#define ENCODER_STEPS_PER_MENU_ITEM 1
+#define ENCODER_STEPS_PER_MENU_ITEM 1
 
 /**
  * Encoder Direction Options

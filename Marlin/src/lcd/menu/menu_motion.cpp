@@ -376,15 +376,24 @@ void menu_move() {
         true
       #endif
     ) {
-      MENU_ITEM(submenu, MSG_MOVE_X, lcd_move_get_x_amount);
-      MENU_ITEM(submenu, MSG_MOVE_Y, lcd_move_get_y_amount);
+
+      #ifdef USE_X_AXIS 
+        MENU_ITEM(submenu, MSG_MOVE_X, lcd_move_get_x_amount);
+      #endif  
+      
+      #ifdef USE_Y_AXIS 
+        MENU_ITEM(submenu, MSG_MOVE_Y, lcd_move_get_y_amount);
+      #endif
+    
     }
     #if ENABLED(DELTA)
       else
         MENU_ITEM(function, MSG_FREE_XY, lcd_lower_z_to_clip_height);
     #endif
 
-    MENU_ITEM(submenu, MSG_MOVE_Z, lcd_move_get_z_amount);
+      #ifdef USE_Z_AXIS 
+        MENU_ITEM(submenu, MSG_MOVE_Z, lcd_move_get_z_amount);
+      #endif
 
     #if NON_E_AXES > 3
       MENU_ITEM(submenu, MSG_MOVE_I, lcd_move_get_i_amount);
@@ -457,24 +466,27 @@ void menu_move() {
 
   #else
 
-    // Independent extruders with one E-stepper per hotend
-    MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_get_e_amount);
-    #if E_MANUAL > 1
-      MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_get_e0_amount);
-      MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_get_e1_amount);
-      #if E_MANUAL > 2
-        MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_get_e2_amount);
-        #if E_MANUAL > 3
-          MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E4, lcd_move_get_e3_amount);
-          #if E_MANUAL > 4
-            MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E5, lcd_move_get_e4_amount);
-            #if E_MANUAL > 5
-              MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E6, lcd_move_get_e5_amount);
-            #endif // E_MANUAL > 5
-          #endif // E_MANUAL > 4
-        #endif // E_MANUAL > 3
-      #endif // E_MANUAL > 2
-    #endif // E_MANUAL > 1
+  
+    #ifdef USE_E_AXIS 
+      // Independent extruders with one E-stepper per hotend
+      MENU_ITEM(submenu, MSG_MOVE_E, lcd_move_get_e_amount);
+      #if E_MANUAL > 1
+        MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E1, lcd_move_get_e0_amount);
+        MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E2, lcd_move_get_e1_amount);
+        #if E_MANUAL > 2
+          MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E3, lcd_move_get_e2_amount);
+          #if E_MANUAL > 3
+            MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E4, lcd_move_get_e3_amount);
+            #if E_MANUAL > 4
+              MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E5, lcd_move_get_e4_amount);
+              #if E_MANUAL > 5
+                MENU_ITEM(submenu, MSG_MOVE_E MSG_MOVE_E6, lcd_move_get_e5_amount);
+              #endif // E_MANUAL > 5
+            #endif // E_MANUAL > 4
+          #endif // E_MANUAL > 3
+        #endif // E_MANUAL > 2
+      #endif // E_MANUAL > 1
+    #endif
 
   #endif
 
@@ -505,9 +517,19 @@ void menu_motion() {
   //
   MENU_ITEM(gcode, MSG_AUTO_HOME, PSTR("G28"));
   #if ENABLED(INDIVIDUAL_AXIS_HOMING_MENU)
-    MENU_ITEM(gcode, MSG_AUTO_HOME_X, PSTR("G28 X"));
-    MENU_ITEM(gcode, MSG_AUTO_HOME_Y, PSTR("G28 Y"));
-    MENU_ITEM(gcode, MSG_AUTO_HOME_Z, PSTR("G28 Z"));
+
+    #ifdef USE_X_AXIS
+      MENU_ITEM(gcode, MSG_AUTO_HOME_X, PSTR("G28 X"));
+    #endif  
+    
+    #ifdef USE_Y_AXIS
+      MENU_ITEM(gcode, MSG_AUTO_HOME_Y, PSTR("G28 Y"));
+    #endif
+
+    #ifdef USE_Z_AXIS
+      MENU_ITEM(gcode, MSG_AUTO_HOME_Z, PSTR("G28 Z"));
+    #endif
+    
     #if NON_E_AXES > 3
         MENU_ITEM(gcode, MSG_AUTO_HOME_I, PSTR("G28 I"));
         #if NON_E_AXES > 4

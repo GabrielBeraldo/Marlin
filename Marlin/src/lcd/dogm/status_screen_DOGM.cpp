@@ -216,10 +216,75 @@ FORCE_INLINE void _draw_heater_status(const int8_t heater, const bool blink) {
 // Homed and known, display constantly.
 //
 FORCE_INLINE void _draw_axis_value(const AxisEnum axis, const char *value, const bool blink) {
-  const uint8_t offs = (XYZ_SPACING) * axis;
+  
+  uint8_t offs = (XYZ_SPACING) * axis;
+
+  #if !defined(USE_X_AXIS) || !defined(SHOW_X_STATUS)
+    if(axis>0){
+      offs-=XYZ_SPACING;
+    }
+  #endif
+  #if !defined(USE_Y_AXIS) || !defined(SHOW_Y_STATUS)
+    if(axis>1){
+      offs-=XYZ_SPACING;
+    }
+  #endif
+  #if !defined(USE_Z_AXIS) || !defined(SHOW_Z_STATUS)
+    if(axis>2){
+      offs-=XYZ_SPACING;
+    }
+  #endif
+
+  #if NON_E_AXES > 3
+    #if !defined(USE_I_AXIS) || !defined(SHOW_I_STATUS)
+      if(axis>3){
+        offs-=XYZ_SPACING;
+      }
+    #endif
+  
+    #if NON_E_AXES > 4
+      #if !defined(USE_J_AXIS) || !defined(SHOW_J_STATUS)
+        if(axis>4){
+          offs-=XYZ_SPACING;
+        }
+      #endif
+  
+      #if NON_E_AXES > 5
+        #if !defined(USE_K_AXIS) || !defined(SHOW_K_STATUS)
+          if(axis>4){
+            offs-=XYZ_SPACING;
+          }
+        #endif
+        
+      #endif
+    #endif
+  #endif
+
+
   lcd_moveto(X_LABEL_POS + offs, XYZ_BASELINE);
-  lcd_put_wchar('X' + axis);
+
+  #if NON_E_AXES > 3
+    if(axis<3) lcd_put_wchar('X' + axis);  
+    else{
+      if(axis == 3) lcd_put_wchar('I');
+      else{
+        #if NON_E_AXES > 4
+          if(axis == 4) lcd_put_wchar('J');
+          else{
+            #if NON_E_AXES > 5
+              if(axis == 5) lcd_put_wchar('K');
+            #endif
+          }
+        #endif
+      }
+    }
+
+  #else
+    lcd_put_wchar('X' + axis);
+  #endif
+
   lcd_moveto(X_VALUE_POS + offs, XYZ_BASELINE);
+  
   if (blink)
     lcd_put_u8str(value);
   else {
@@ -228,7 +293,7 @@ FORCE_INLINE void _draw_axis_value(const AxisEnum axis, const char *value, const
     else {
       #if DISABLED(HOME_AFTER_DEACTIVATE) && DISABLED(DISABLE_REDUCED_ACCURACY_WARNING)
         if (!TEST(axis_known_position, axis))
-          lcd_put_u8str_P(axis == Z_AXIS ? PSTR("      ") : PSTR("    "));
+          lcd_put_u8str_P(PSTR("    "));
         else
       #endif
           lcd_put_u8str(value);
@@ -238,7 +303,18 @@ FORCE_INLINE void _draw_axis_value(const AxisEnum axis, const char *value, const
 
 void MarlinUI::draw_status_screen() {
 
-  static char xstring[5], ystring[5], zstring[8];
+  static char xstring[5], ystring[5], zstring[5];
+
+  #if NON_E_AXES > 3
+    static char istring[5];    
+    #if NON_E_AXES > 4
+      static char jstring[5];
+      #if NON_E_AXES > 5
+        static char kstring[5];
+      #endif
+    #endif
+  #endif
+
   #if ENABLED(FILAMENT_LCD_DISPLAY)
     static char wstring[5], mstring[4];
   #endif
@@ -257,7 +333,18 @@ void MarlinUI::draw_status_screen() {
     #endif
     strcpy(xstring, ftostr4sign(LOGICAL_X_POSITION(current_position[X_AXIS])));
     strcpy(ystring, ftostr4sign(LOGICAL_Y_POSITION(current_position[Y_AXIS])));
-    strcpy(zstring, ftostr52sp(LOGICAL_Z_POSITION(current_position[Z_AXIS])));
+    strcpy(zstring, ftostr4sign(LOGICAL_Z_POSITION(current_position[Z_AXIS])));
+
+    #if NON_E_AXES > 3
+      strcpy(istring, ftostr4sign(LOGICAL_I_POSITION(current_position[I_AXIS])));
+      #if NON_E_AXES > 4
+        strcpy(jstring, ftostr4sign(LOGICAL_J_POSITION(current_position[J_AXIS])));
+        #if NON_E_AXES > 5
+          strcpy(kstring, ftostr4sign(LOGICAL_K_POSITION(current_position[K_AXIS])));
+        #endif
+      #endif
+    #endif
+
     #if ENABLED(FILAMENT_LCD_DISPLAY)
       strcpy(wstring, ftostr12ns(filament_width_meas));
       strcpy(mstring, i16tostr3(100.0 * (
@@ -485,12 +572,42 @@ void MarlinUI::draw_status_screen() {
 
       #else
 
-        _draw_axis_value(X_AXIS, xstring, blink);
-        _draw_axis_value(Y_AXIS, ystring, blink);
+        #if defined(USE_X_AXIS) && defined(SHOW_X_STATUS)
+          _draw_axis_value(X_AXIS, xstring, blink);
+        #endif
+        #if defined(USE_Y_AXIS) && defined(SHOW_Y_STATUS)
+          _draw_axis_value(Y_AXIS, ystring, blink);
+        #endif
+        
 
       #endif
+      
+      #if defined(USE_Z_AXIS) && defined(SHOW_Z_STATUS) 
+        _draw_axis_value(Z_AXIS, zstring, blink);
+      #endif
 
-      _draw_axis_value(Z_AXIS, zstring, blink);
+      #define NO_ROOM (defined(SHOW_X_STATUS) && defined(SHOW_Y_STATUS) && defined(SHOW_Z_STATUS)) ? true : false
+
+      #if !NO_ROOM
+        #if NON_E_AXES > 3
+          #if defined(SHOW_I_STATUS) 
+            _draw_axis_value(I_AXIS, istring, blink);
+          #endif
+          
+          #if NON_E_AXES > 4
+            #if defined(SHOW_J_STATUS)
+              _draw_axis_value(J_AXIS, jstring, blink);
+            #endif
+              
+            #if NON_E_AXES > 5
+              #if defined(SHOW_K_STATUS)
+                _draw_axis_value(K_AXIS, kstring, blink);
+              #endif
+                
+            #endif
+          #endif
+        #endif
+      #endif
 
       #if DISABLED(XYZ_HOLLOW_FRAME)
         u8g.setColorIndex(1); // black on white

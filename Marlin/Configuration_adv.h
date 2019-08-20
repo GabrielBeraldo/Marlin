@@ -49,16 +49,6 @@
 #define INITIALIZE_SERINGE_PUMP_PATH        _UxGT("ROUTINES/INITMO~1.GCO") // example for filename.gcode: PATH/FILENA~1.GCO
 #define FLUSH_SERINGE_PUMP_PATH             _UxGT("ROUTINES/FLUSHM~1.GCO")
 
-#define SHOW_X_STATUS
-#define SHOW_Y_STATUS
-#define SHOW_Z_STATUS
-//#define SHOW_E_STATUS
-
-#define SHOW_X_MOVE
-#define SHOW_Y_MOVE
-#define SHOW_Z_MOVE
-#define SHOW_E_MOVE
-
 //TO USE ENDSTOP INTERRUPTS YOU MUST NOT USE ANY ADITIONAL SOFTWARE SERIAL
 #ifndef ENDSTOP_INTERRUPTS_FEATURE
   #define SOFTWARE_SERIAL 0
@@ -2020,7 +2010,7 @@
   #define DEFAULT_MEASURED_FILAMENT_DIA DEFAULT_NOMINAL_FILAMENT_DIA // Set measured to nominal initially
 
   // Display filament width on the LCD status line. Status messages will expire after 5 seconds.
-  //#define FILAMENT_LCD_DISPLAY
+  #define FILAMENT_LCD_DISPLAY
 #endif
 
 /**
@@ -2351,7 +2341,7 @@
   #define SERVICE_WARNING_BUZZES  3
   // Activate up to 3 service interval watchdogs
   #define SERVICE_NAME_1      "Service"
-  #define SERVICE_INTERVAL_1  100 // print hours
+  #define SERVICE_INTERVAL_1  1000 // print hours
   //#define SERVICE_NAME_2      "Service required! 2"
   //#define SERVICE_INTERVAL_2  200 // print hours
   //#define SERVICE_NAME_3      "Service required! 3"

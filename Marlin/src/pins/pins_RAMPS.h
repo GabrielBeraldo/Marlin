@@ -86,13 +86,13 @@
 #define Z_MIN_PIN          18
 #define Z_MAX_PIN          -1
 
-#define I_MIN_PIN          19
+#define I_MIN_PIN          2
 #define I_MAX_PIN          -1
 
 #define J_MIN_PIN          15
 #define J_MAX_PIN          -1
 
-#define K_MIN_PIN          2
+#define K_MIN_PIN          19
 #define K_MAX_PIN          -1
 
 //
