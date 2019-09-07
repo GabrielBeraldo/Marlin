@@ -490,6 +490,8 @@ private:
     static void M43();
   #endif
 
+  static void M44();
+
   #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
     static void M48();
   #endif

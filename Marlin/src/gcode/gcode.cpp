@@ -326,6 +326,8 @@ void GcodeSuite::process_parsed_command(
         case 43: M43(); break;                                    // M43: Read pin state
       #endif
 
+      case 44: M44(); break;                                      // M44: generate a pulse in a specific pin
+
       #if ENABLED(Z_MIN_PROBE_REPEATABILITY_TEST)
         case 48: M48(); break;                                    // M48: Z probe repeatability test
       #endif
