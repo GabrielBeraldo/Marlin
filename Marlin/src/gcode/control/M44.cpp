@@ -35,7 +35,7 @@ void GcodeSuite::M44() {
 
     millis_t wait_ms = DEFAULT_M44_WAIT;
 
-    if (parser.seenval('S')) wait_ms = parser.value_millis(); // seconds to wait
+    if (parser.seenval('T')) wait_ms = parser.value_millis(); // seconds to wait
 
     const pin_t pin_number = parser.byteval('P', LED_PIN);
     if (pin_number < 0) return;
