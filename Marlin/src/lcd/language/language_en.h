@@ -1073,7 +1073,7 @@
   #define MSG_INFO_PROTOCOL                   _UxGT("Protocol")
 #endif
 #ifndef MSG_CASE_LIGHT
-  #define MSG_CASE_LIGHT                      _UxGT("Case light")
+  #define MSG_CASE_LIGHT                      _UxGT("light")
 #endif
 #ifndef MSG_CASE_LIGHT_BRIGHTNESS
   #define MSG_CASE_LIGHT_BRIGHTNESS           _UxGT("Light Brightness")

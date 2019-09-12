@@ -54,11 +54,11 @@
     // always report case light status
     SERIAL_ECHO_START();
     if (!case_light_on) {
-      SERIAL_ECHOLNPGM("Case light: off");
+      SERIAL_ECHOLNPGM("light: off");
     }
     else {
-      if (!USEABLE_HARDWARE_PWM(CASE_LIGHT_PIN)) SERIAL_ECHOLNPGM("Case light: on");
-      else SERIAL_ECHOLNPAIR("Case light: ", case_light_brightness);
+      if (!USEABLE_HARDWARE_PWM(CASE_LIGHT_PIN)) SERIAL_ECHOLNPGM("light: on");
+      else SERIAL_ECHOLNPAIR("light: ", case_light_brightness);
     }
   }
 #endif // HAS_CASE_LIGHT

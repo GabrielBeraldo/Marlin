@@ -49,6 +49,10 @@
 #define INITIALIZE_SERINGE_PUMP_PATH        _UxGT("ROUTINES/INITMO~1.GCO") // example for filename.gcode: PATH/FILENA~1.GCO
 #define FLUSH_SERINGE_PUMP_PATH             _UxGT("ROUTINES/FLUSHM~1.GCO")
 
+
+//DEFAULT M44 TIME WAIT FOR CHANGE PIN STATE BACK
+#define DEFAULT_M44_WAIT 500
+
 //TO USE ENDSTOP INTERRUPTS YOU MUST NOT USE ANY ADITIONAL SOFTWARE SERIAL
 #ifndef ENDSTOP_INTERRUPTS_FEATURE
   #define SOFTWARE_SERIAL 0
@@ -302,12 +306,12 @@
 /**
  * M355 Case Light on-off / brightness
  */
-//#define CASE_LIGHT_ENABLE
+#define CASE_LIGHT_ENABLE
 #if ENABLED(CASE_LIGHT_ENABLE)
-  //#define CASE_LIGHT_PIN 4                  // Override the default pin if needed
+  #define CASE_LIGHT_PIN RAMPS_D9_PIN                  // Override the default pin if needed
   #define INVERT_CASE_LIGHT false             // Set true if Case Light is ON when pin is LOW
-  #define CASE_LIGHT_DEFAULT_ON true          // Set default power-up state on
-  #define CASE_LIGHT_DEFAULT_BRIGHTNESS 105   // Set default power-up brightness (0-255, requires PWM pin)
+  #define CASE_LIGHT_DEFAULT_ON false         // Set default power-up state on
+  #define CASE_LIGHT_DEFAULT_BRIGHTNESS 255   // Set default power-up brightness (0-255, requires PWM pin)
   //#define MENU_ITEM_CASE_LIGHT              // Add a Case Light option to the LCD main menu
   //#define CASE_LIGHT_USE_NEOPIXEL           // Use Neopixel LED as case light, requires NEOPIXEL_LED.
   #if ENABLED(CASE_LIGHT_USE_NEOPIXEL)
