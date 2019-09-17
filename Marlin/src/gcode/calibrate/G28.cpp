@@ -312,7 +312,7 @@ void GcodeSuite::G28(const bool always_home_all) {
 
     set_destination_from_current();
 
-    #if Z_HOME_DIR > 0  // If homing away from BED do Z first
+    #if Z_HOME_DIR > 0  || ENABLED(HOME_Z_FIRST)// If homing away from BED do Z first
 
       if (home_all || homeZ) homeaxis(Z_AXIS);
 
@@ -404,7 +404,7 @@ void GcodeSuite::G28(const bool always_home_all) {
     #endif
 
     // Home Z last if homing towards the bed
-    #if Z_HOME_DIR < 0
+    #if Z_HOME_DIR < 0 && DISABLED(HOME_Z_FIRST)
       if (home_all || homeZ) {
         #if ENABLED(Z_SAFE_HOMING)
           home_z_safely();

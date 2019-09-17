@@ -34,9 +34,13 @@ wait_for_change(millis_t time) {
 void GcodeSuite::M44() {
 
     millis_t wait_ms = DEFAULT_M44_WAIT;
+    int pwm_value = 255;
 
     if (parser.seenval('T')) wait_ms = parser.value_millis(); // seconds to wait
 
+    if (parser.seenval('S')) pwm_value = parser.value_int();
+    constrain(pwm_value,0,255);
+    
     const pin_t pin_number = parser.byteval('P', LED_PIN);
     if (pin_number < 0) return;
 
@@ -47,7 +51,7 @@ void GcodeSuite::M44() {
     pinMode(pin_number, OUTPUT);
     digitalWrite(pin_number, 0);
 
-    digitalWrite(pin_number, 1);
+    analogWrite(pin_number, pwm_value);
     wait_for_change(wait_ms);
     digitalWrite(pin_number, 0);
 

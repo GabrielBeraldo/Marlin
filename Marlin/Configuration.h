@@ -38,45 +38,22 @@
  */
 #define CONFIGURATION_H_VERSION 020000
 
-//===========================================================================
-//============================= Getting Started =============================
-//===========================================================================
 
-/**
- * Here are some standard links for getting your machine calibrated:
- *
- * http://reprap.org/wiki/Calibration
- * http://youtu.be/wAL9d7FgInk
- * http://calculator.josefprusa.cz
- * http://reprap.org/wiki/Triffid_Hunter%27s_Calibration_Guide
- * http://www.thingiverse.com/thing:5573
- * https://sites.google.com/site/repraplogphase/calibration-of-your-reprap
- * http://www.thingiverse.com/thing:298812
- */
-
-//===========================================================================
-//============================= DELTA Printer ===============================
-//===========================================================================
-// For a Delta printer start with one of the configuration files in the
-// config/examples/delta directory and customize for your machine.
-//
-
-//===========================================================================
-//============================= SCARA Printer ===============================
-//===========================================================================
-// For a SCARA printer start with the configuration files in
-// config/examples/SCARA and customize for your machine.
-//
+// This defines the number of axes that are not used for extruders (axes that benefit from endstops and homing).
+// This must be set to 3 also if one or more of the positioning axes are driven by multiple stepper motors. Only increase 
+// for robots with additional axes (tools apart from extruders that are driven by stepper motors) 
+#define NON_E_AXES 4
 
 //select machine model by the differences
 //#define MODULE_50 
-#define MODULE_20
+#define MODULE_20 
 //#define DEV_PARAMETERS 
+//#define NO_MODULE_XYZ
 
 #define USE_X_AXIS
-#define USE_Y_AXIS
-#define USE_Z_AXIS
-#define USE_E_AXIS
+//#define USE_Y_AXIS
+//#define USE_Z_AXIS
+//#define USE_E_AXIS
 
 #define SHOW_X_STATUS
 #define SHOW_Y_STATUS
@@ -104,6 +81,11 @@
   #define SYRINGE_SIZE_I 100
   #define SYRINGE_SIZE_J 100
   #define SYRINGE_SIZE_K 100
+#endif
+
+#ifdef NO_MODULE_XYZ
+  #define VERSION "2.0.0 / XYZ"
+  #define HOME_Z_FIRST
 #endif
 // @section info
 
@@ -185,10 +167,7 @@
 // You can use an online service to generate a random UUID. (eg http://www.uuidgenerator.net/version4)
 //#define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
 
-// This defines the number of axes that are not used for extruders (axes that benefit from endstops and homing).
-// This must be set to 3 also if one or more of the positioning axes are driven by multiple stepper motors. Only increase 
-// for robots with additional axes (tools apart from extruders that are driven by stepper motors) 
-#define NON_E_AXES 4
+
 
 // @section extruder
 
@@ -668,20 +647,52 @@
 #endif
 
 // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-#define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-#define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-#define Z_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-#define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-#define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define K_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define I_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define J_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define K_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+#ifdef DEV_PARAMETERS
+  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define Z_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define I_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define J_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+#endif
 
+#ifdef MODULE_20
+  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define I_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define J_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+#endif 
+#ifdef MODULE_50
+  #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define I_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define J_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+#endif
 /**
  * Stepper Drivers
  *
@@ -730,7 +741,7 @@
  *
  * :[2,3,4,5,6,7]
  */
-//#define ENDSTOP_NOISE_THRESHOLD 2
+#define ENDSTOP_NOISE_THRESHOLD 3
 
 //=============================================================================
 //============================== Movement Settings ============================
@@ -778,7 +789,12 @@
   //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
 #endif
 #endif
+#ifdef  NO_MODULE_XYZ
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 80, 1000} //e axis in ML 
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 250 }
+  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 500 }
 
+#endif
 /**
  * Default Acceleration (change/s) change = mm/s
  * Override with M204
@@ -1102,8 +1118,23 @@
 // @section machine
 
 // The size of the print bed
-#define X_BED_SIZE 780
-#define Y_BED_SIZE 600
+#ifdef NO_MODULE_XYZ
+  #define X_BED_SIZE 780
+  #define Y_BED_SIZE 450
+  #define Z_MAX_POS 130
+#endif
+
+#ifdef MODULE_50
+  #define X_BED_SIZE 780
+  #define Y_BED_SIZE 600
+  #define Z_MAX_POS 200
+#endif
+
+#ifdef MODULE_20
+  #define X_BED_SIZE 560
+  #define Y_BED_SIZE 600
+  #define Z_MAX_POS 200
+#endif
 
 // Travel limits (mm) after homing, corresponding to endstop positions.
 #define X_MIN_POS 0
@@ -1111,7 +1142,8 @@
 #define Z_MIN_POS 0
 #define X_MAX_POS X_BED_SIZE
 #define Y_MAX_POS Y_BED_SIZE
-#define Z_MAX_POS 200
+
+
 #if NON_E_AXES > 3
   #define I_MIN_POS 0
   #define I_MAX_POS SYRINGE_SIZE_I

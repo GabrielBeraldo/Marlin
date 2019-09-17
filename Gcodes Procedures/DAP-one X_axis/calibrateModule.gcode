@@ -10,10 +10,11 @@ G28 X 	;home X
 ; begin of the fist plate
 ;========================
 ;first offset
-G1 F3000 X65
+G1 F3000 X66
 G91 	;relative coordinates
 ;========================
 
+M400
 M117 Position 1
 G1 F180 I20 
 G4 P200
