@@ -42,17 +42,18 @@
 // This defines the number of axes that are not used for extruders (axes that benefit from endstops and homing).
 // This must be set to 3 also if one or more of the positioning axes are driven by multiple stepper motors. Only increase 
 // for robots with additional axes (tools apart from extruders that are driven by stepper motors) 
+//XYZ + IJK = 3 + n_modules
 #define NON_E_AXES 4
 
 //select machine model by the differences
 //#define MODULE_50 
-#define MODULE_20 
-//#define DEV_PARAMETERS 
+//#define MODULE_20 
+#define DEV_PARAMETERS 
 //#define NO_MODULE_XYZ
 
 #define USE_X_AXIS
-//#define USE_Y_AXIS
-//#define USE_Z_AXIS
+#define USE_Y_AXIS
+#define USE_Z_AXIS
 //#define USE_E_AXIS
 
 #define SHOW_X_STATUS
@@ -664,8 +665,8 @@
 #endif
 
 #ifdef MODULE_20
-  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
-  #define Y_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define X_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
   #define Z_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
   #define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
   #define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
@@ -692,6 +693,24 @@
   #define J_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
   #define K_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
   #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+#endif
+
+#ifdef NO_MODULE_XYZ
+  #define X_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define Y_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define Z_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define I_MIN_ENDSTOP_INVERTING true // set to true to invert the logic of the endstop.
+  #define J_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MIN_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define X_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Y_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define I_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define J_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define K_MAX_ENDSTOP_INVERTING false // set to true to invert the logic of the endstop.
+  #define Z_MIN_PROBE_ENDSTOP_INVERTING false // set to true to invert the logic of the probe.
+
+  #define HIDE_PUMP_MENU
 #endif
 /**
  * Stepper Drivers
@@ -773,26 +792,31 @@
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 31.49, 31.49, 31.49, 1000} //e axis in ML  
   #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 250, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
   #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 500, 500 }
+  #define DEFAULT_TRAVEL_ACCELERATION   250    // X, Y, Z acceleration for travel (non printing) moves
 
 #else
 #ifdef MODULE_50
   #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 52.49, 52.49, 477.87, 1000} //e axis in ML  
   #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 12, 250 }  //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
-  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 4, 500 }
+  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 9, 500 }
+  #define DEFAULT_TRAVEL_ACCELERATION   250    // X, Y, Z acceleration for travel (non printing) moves
 
 #endif
 #ifdef MODULE_20
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 80, 1666, 1000} //e axis in ML 
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 4, 250 }
-  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 4, 500 }
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 31.49, 52.49, 52.49, 940.50, 1000} //e axis in ML 
+  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 3, 3 }
+  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 2, 2 }
+  #define DEFAULT_TRAVEL_ACCELERATION   250    // X, Y, Z acceleration for travel (non printing) moves
 
   //X, Y, Z, [I ,[J ,[K ,]]] E0 [, E1[, E2[, E3[, E4[, E5]]]]]
 #endif
 #endif
 #ifdef  NO_MODULE_XYZ
-  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 80, 1000} //e axis in ML 
-  #define DEFAULT_MAX_FEEDRATE          { 250, 250, 250, 250 }
-  #define DEFAULT_MAX_ACCELERATION      { 500, 500, 500, 500 }
+
+  #define DEFAULT_AXIS_STEPS_PER_UNIT   { 52.49, 52.49, 52.49, 1000} //e axis in ML 
+  #define DEFAULT_MAX_FEEDRATE          { 666, 666, 666, 666 }
+  #define DEFAULT_MAX_ACCELERATION      { 5000, 5000, 5000, 500 }
+  #define DEFAULT_TRAVEL_ACCELERATION   5000    // X, Y, Z acceleration for travel (non printing) moves
 
 #endif
 /**
@@ -805,7 +829,7 @@
  */
 #define DEFAULT_ACCELERATION          250    // X, Y, Z and E acceleration for printing moves
 #define DEFAULT_RETRACT_ACCELERATION  10    // E acceleration for retracts
-#define DEFAULT_TRAVEL_ACCELERATION   250    // X, Y, Z acceleration for travel (non printing) moves
+
 
 //
 // Use Junction Deviation instead of traditional Jerk Limiting
@@ -848,7 +872,7 @@
  *
  * See https://github.com/synthetos/TinyG/wiki/Jerk-Controlled-Motion-Explained
  */
-#define S_CURVE_ACCELERATION
+//#define S_CURVE_ACCELERATION
 
 //===========================================================================
 //============================= Z Probe Options =============================
@@ -1131,6 +1155,12 @@
 #endif
 
 #ifdef MODULE_20
+  #define X_BED_SIZE 560
+  #define Y_BED_SIZE 600
+  #define Z_MAX_POS 200
+#endif
+
+#ifdef DEV_PARAMETERS
   #define X_BED_SIZE 560
   #define Y_BED_SIZE 600
   #define Z_MAX_POS 200
@@ -1443,7 +1473,7 @@
 #endif
 
 // Homing speeds (mm/m)
-#define HOMING_FEEDRATE_XY (50*60)
+#define HOMING_FEEDRATE_XY (70*60)
 #define HOMING_FEEDRATE_Z  (50*60)
 #if NON_E_AXES > 3
   #define HOMING_FEEDRATE_I (1*60)
@@ -1530,7 +1560,7 @@
 // M502 - reverts to the default "factory settings".  You still need to store them in EEPROM afterwards if you want to.
 //
 #define EEPROM_SETTINGS // Enable for M500 and M501 commands
-//#define DISABLE_M503    // Saves ~2700 bytes of PROGMEM. Disable for release!
+#define DISABLE_M503    // Saves ~2700 bytes of PROGMEM. Disable for release!
 #define EEPROM_CHITCHAT   // Give feedback on EEPROM commands. Disable to save PROGMEM.
 
 //

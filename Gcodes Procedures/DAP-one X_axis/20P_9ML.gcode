@@ -2,6 +2,11 @@ G21 	;set mm
 G90 	;absolute coordinates
 M117 home X
 G28 X 
+
+M400
+M117 init. module
+G28 I	;home E
+
 G4 P500
 
 ;first movimentation in absulute Position 

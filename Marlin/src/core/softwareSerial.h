@@ -36,7 +36,7 @@
     bool LISTEN_TO_SW_SERIAL(int);
     void UPDATE_SOFTWARE_SERIAL();
 
-    bool GET_PH_READING(int, int);
+    bool GET_PH_READING(int, int, int);
 
     void UPDATE_SOFTWARE_SERIAL_1();
     void ECHO_SOFTWARE_SERIAL_1();

@@ -55,7 +55,7 @@
 
 //TO USE ENDSTOP INTERRUPTS YOU MUST NOT USE ANY ADITIONAL SOFTWARE SERIAL
 #ifndef ENDSTOP_INTERRUPTS_FEATURE
-  #define SOFTWARE_SERIAL 0
+  #define SOFTWARE_SERIAL 2
 #endif
 
 #define S_SERIAL_DATASIZE 70
@@ -455,9 +455,14 @@
   #endif
 #endif
 
-#define HOMING_BUMP_DIVISOR ARRAY_N(NON_E_AXES, 5, 5, 5, 2, 2, 2) // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#ifdef NO_MODULE_XYZ
+   #define HOMING_BUMP_DIVISOR ARRAY_N(NON_E_AXES, 5, 5, 5, 2, 2, 2) // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#else
+  #define HOMING_BUMP_DIVISOR ARRAY_N(NON_E_AXES, 5, 5, 5, 2, 2, 2) // Re-Bump Speed Divisor (Divides the Homing Feedrate)
+#endif 
 
-//#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
+
+#define QUICK_HOME                     // If homing includes X and Y, do a diagonal move initially
 
 // When G28 is called, this option will make Y home before X
 //#define HOME_Y_BEFORE_X

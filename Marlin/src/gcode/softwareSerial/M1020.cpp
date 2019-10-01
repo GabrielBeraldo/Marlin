@@ -39,8 +39,9 @@ void GcodeSuite::M1020() {
 
     const int serial_port = parser.intval('P');
     const int port_timeout = parser.intval('T', DEFAULT_PH_READ_TIMEOUT );
+    const int sample_id = parser.intval('I', 0 );
     
-    if(!GET_PH_READING(serial_port, port_timeout)){
+    if(!GET_PH_READING(serial_port, port_timeout, sample_id)){
         SERIAL_ECHOLN("error: GET_PH_READING return false");
         return;
     }

@@ -292,7 +292,16 @@ bool INITIALIZE_SW_SERIAL(int serial_port, int port_baudrate){
   #endif
 }
 
-bool HANDLE_PH_READING_DATA(const char* received_data){
+String intToString(int val){
+
+  char buff[100];
+  snprintf(buff, sizeof(buff), "%d", val);
+  String result = buff;
+  return result;
+
+}
+
+bool HANDLE_PH_READING_DATA(const char* received_data, const int port_number, const int sample_id){
   
   int data_lenght = 0;
   bool _ph_read_is_stable = false;
@@ -301,7 +310,9 @@ bool HANDLE_PH_READING_DATA(const char* received_data){
   String time_info;
   String ph_info;
   String temp_info;
-  
+  String ID = intToString(sample_id);
+  String port = intToString(port_number);
+
   while(received_data[data_lenght] != ';'){
     if(received_data[data_lenght] != ' ') date_info+=received_data[data_lenght];
     data_lenght++;
@@ -326,15 +337,17 @@ bool HANDLE_PH_READING_DATA(const char* received_data){
   }
   
   data_lenght++;
-  while(received_data[data_lenght] != '\0'){
+  while(received_data[data_lenght] != '\n'){
     if(received_data[data_lenght] != ' ') temp_info+=received_data[data_lenght];
     data_lenght++;
   }
   
   if(_ph_read_is_stable){
     STOP_LISTEN_SW_SERIAL(0);
-
-    String Buffer = date_info + ", " + time_info + ", " + ph_info + ", " + temp_info;
+    
+    String Buffer = "{\"port\":\"" + port + "\", \"ID\":\"" + ID + "\", \"date\":\"" + date_info + "\", \"time\":\"" + time_info + "\", \"ph\":\"" + ph_info + "\", \"temp\":\"" + temp_info + "\"}";
+    
+    //String Buffer = date_info + ", " + time_info + ", " + ph_info + ", " + temp_info;
     SERIAL_ECHOLN(Buffer);
 
     int ph_len = ph_info.length();  
@@ -348,7 +361,7 @@ bool HANDLE_PH_READING_DATA(const char* received_data){
   else return false;
 }
 
-bool GET_PH_READING( int serial_port, int port_timeout){
+bool GET_PH_READING( int serial_port, int port_timeout, int ID){
   #if SOFTWARE_SERIAL > 0
 
   unsigned long _sw_serial_reading_time = millis();
@@ -363,7 +376,7 @@ bool GET_PH_READING( int serial_port, int port_timeout){
     watchdog_reset();   // beat the dog
 
     if(millis() - _sw_serial_reading_time >= port_timeout){
-      SERIAL_ECHOLN("error: reading timed out!");
+      SERIAL_ECHOLN("{\"error\" : \"TIMEOUT\"}");
       STOP_LISTEN_SW_SERIAL(0);
       return false;
     }
@@ -375,7 +388,7 @@ bool GET_PH_READING( int serial_port, int port_timeout){
       case 1 : 
         if(_sw_serial_1_avaliable){
           _sw_serial_1_avaliable = false;
-          if(HANDLE_PH_READING_DATA(_sw_serial_1_received_data)) return true;
+          if(HANDLE_PH_READING_DATA(_sw_serial_1_received_data, serial_port, ID)) return true;
           //SERIAL_ECHOLN("test received data 1");
         } 
         break;
@@ -384,7 +397,7 @@ bool GET_PH_READING( int serial_port, int port_timeout){
         #if SOFTWARE_SERIAL > 1
           if(_sw_serial_2_avaliable){
             _sw_serial_2_avaliable = false;
-            if(HANDLE_PH_READING_DATA(_sw_serial_2_received_data)) return true;
+            if(HANDLE_PH_READING_DATA(_sw_serial_2_received_data, serial_port, ID)) return true;
             //SERIAL_ECHOLN("test received data 2");
           } 
           break;  
@@ -396,7 +409,7 @@ bool GET_PH_READING( int serial_port, int port_timeout){
         #if SOFTWARE_SERIAL > 2
           if(_sw_serial_3_avaliable){
             _sw_serial_3_avaliable = false;
-            if(HANDLE_PH_READING_DATA(_sw_serial_3_received_data)) return true;
+            if(HANDLE_PH_READING_DATA(_sw_serial_3_received_data, serial_port, ID)) return true;
           } 
           break;
         #else 

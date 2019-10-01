@@ -112,7 +112,9 @@ void menu_info();
 void menu_led();
 
 #ifndef STOCK_MARLIN_MENU 
-  void lcd_pump_menu();
+  #ifndef HIDE_PUMP_MENU 
+   void lcd_pump_menu();
+   #endif
 #endif
 
 #if ENABLED(MIXING_EXTRUDER)
@@ -136,7 +138,9 @@ void menu_main() {
     #if ENABLED(SDSUPPORT) || defined(ACTION_ON_CANCEL)
       MENU_ITEM(submenu, MSG_STOP_PRINT, menu_abort_confirm);
     #endif
-    MENU_ITEM(submenu, MSG_TUNE, menu_tune);
+    #ifdef STOCK_MARLIN_MENU
+      MENU_ITEM(submenu, MSG_TUNE, menu_tune);
+    #endif
   }
   else {
     #if !HAS_ENCODER_WHEEL && ENABLED(SDSUPPORT)
@@ -174,7 +178,9 @@ void menu_main() {
   }
   
   #ifndef STOCK_MARLIN_MENU
+    #ifndef HIDE_PUMP_MENU
     if(card_detected && !card_open) MENU_ITEM(submenu, MSG_PUMP_MENU, lcd_pump_menu);
+    #endif
   #endif
 
   #ifdef STOCK_MARLIN_MENU

@@ -4,10 +4,10 @@ G90 	;absolute coordinates
 G28 Y 	;home Y
 
 ;first movimentation, to match the tips of nozzles to the drain structure
+
 M400
 M117 Drain position
-G1 F3000 Y10
-
+G1 F3000 Y25
 M400
 M117 init. module
 G28 I
